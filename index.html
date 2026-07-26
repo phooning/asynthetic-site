@@ -46,6 +46,11 @@
         --edge: clamp(1.25rem, 4vw, 4rem);
         --content-width: 72rem;
 
+        --pointer-a-x: 0px;
+        --pointer-a-y: 0px;
+        --pointer-b-x: 0px;
+        --pointer-b-y: 0px;
+
         --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
       }
 
@@ -89,7 +94,10 @@
         color: var(--white);
       }
 
-      /* Background composition */
+      /* Background composition
+       Each animated element moves with transforms rather than animating
+       background-position or blur values. This keeps the page quieter and
+       generally cheaper to render. */
 
       .scene {
         position: fixed;
@@ -107,12 +115,11 @@
       }
 
       .scene__base,
-      .scene__accretion,
-      .scene__gravity,
       .scene__mesh,
       .scene__grid,
       .scene__noise,
-      .scene__vignette {
+      .scene__vignette,
+      .scene__pointer {
         position: absolute;
         pointer-events: none;
       }
@@ -140,57 +147,6 @@
           );
       }
 
-      .scene__accretion {
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        mix-blend-mode: screen;
-        transition: opacity 1.6s var(--ease-out-expo);
-      }
-
-      .scene__accretion.is-ready {
-        opacity: 1;
-      }
-
-      .scene__gravity {
-        top: 50%;
-        left: 50%;
-        width: clamp(17rem, 34vw, 34rem);
-        aspect-ratio: 1;
-        border-radius: 50%;
-        background:
-          radial-gradient(
-            circle,
-            rgba(0, 0, 0, 0.98) 0 20%,
-            rgba(5, 6, 10, 0.72) 20.5%,
-            transparent 31%
-          ),
-          conic-gradient(
-            from 86deg,
-            transparent 0 20%,
-            rgba(108, 225, 238, 0.14) 25%,
-            transparent 31% 65%,
-            rgba(125, 102, 255, 0.13) 72%,
-            transparent 79%
-          );
-        opacity: 0.8;
-        filter: blur(0.25px);
-        transform: translate3d(-50%, -50%, 0) scaleX(1.13);
-        -webkit-mask-image: radial-gradient(
-          circle,
-          #000 0 32%,
-          rgba(0, 0, 0, 0.5) 48%,
-          transparent 72%
-        );
-        mask-image: radial-gradient(
-          circle,
-          #000 0 32%,
-          rgba(0, 0, 0, 0.5) 48%,
-          transparent 72%
-        );
-      }
-
       .scene__mesh {
         inset: -18%;
         background:
@@ -209,7 +165,7 @@
             rgba(255, 255, 255, 0.035),
             transparent 25%
           );
-        opacity: 0.5;
+        opacity: 0.9;
         transform: translate3d(-2%, -1%, 0) scale(1.04);
         animation:
           mesh-float 9s ease-in-out infinite alternate,
@@ -217,10 +173,61 @@
         will-change: transform;
       }
 
+      .scene__pointer {
+        inset: 0;
+        will-change: transform;
+      }
+
+      .scene__pointer--a {
+        transform: translate3d(var(--pointer-a-x), var(--pointer-a-y), 0);
+      }
+
+      .scene__pointer--b {
+        transform: translate3d(var(--pointer-b-x), var(--pointer-b-y), 0);
+      }
+
+      .scene__orb {
+        position: absolute;
+        border-radius: 50%;
+        will-change: transform;
+      }
+
+      .scene__orb--a {
+        width: min(64rem, 72vw);
+        aspect-ratio: 1;
+        top: -42%;
+        left: -24%;
+        background: radial-gradient(
+          circle,
+          rgba(92, 79, 203, 0.22) 0%,
+          rgba(92, 79, 203, 0.1) 32%,
+          transparent 70%
+        );
+        animation:
+          orb-a 8s ease-in-out infinite alternate,
+          orb-pulse-a 5s ease-in-out infinite;
+      }
+
+      .scene__orb--b {
+        width: min(58rem, 66vw);
+        aspect-ratio: 1;
+        right: -22%;
+        bottom: -40%;
+        background: radial-gradient(
+          circle,
+          rgba(105, 220, 230, 0.13) 0%,
+          rgba(105, 220, 230, 0.055) 34%,
+          transparent 72%
+        );
+        animation:
+          orb-b 10s ease-in-out infinite alternate,
+          orb-pulse-b 7s ease-in-out infinite;
+      }
+
       .scene__grid {
         inset: 0;
         overflow: hidden;
-        opacity: 0.48;
+        opacity: 0.68;
         background-image:
           linear-gradient(var(--grid-major) 1px, transparent 1px),
           linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
@@ -244,6 +251,24 @@
           rgba(0, 0, 0, 0.8) 46%,
           transparent 88%
         );
+      }
+
+      .scene__grid::after {
+        content: "";
+        position: absolute;
+        inset: -45%;
+        background: linear-gradient(
+          115deg,
+          transparent 38%,
+          rgba(105, 220, 230, 0.025) 46%,
+          rgba(255, 255, 255, 0.09) 50%,
+          rgba(92, 79, 203, 0.035) 54%,
+          transparent 62%
+        );
+        transform: translate3d(-38%, -20%, 0);
+        animation: grid-shimmer 7s ease-in-out infinite;
+        mix-blend-mode: screen;
+        will-change: transform, opacity;
       }
 
       .scene__noise {
@@ -284,6 +309,24 @@
         }
       }
 
+      @keyframes orb-a {
+        from {
+          transform: translate3d(0, 0, 0) scale(1);
+        }
+        to {
+          transform: translate3d(8vw, 7vh, 0) scale(1.08);
+        }
+      }
+
+      @keyframes orb-b {
+        from {
+          transform: translate3d(0, 0, 0) scale(1.02);
+        }
+        to {
+          transform: translate3d(-7vw, -8vh, 0) scale(1.09);
+        }
+      }
+
       @keyframes mesh-pulse {
         0%,
         100% {
@@ -294,6 +337,26 @@
         }
       }
 
+      @keyframes orb-pulse-a {
+        0%,
+        100% {
+          opacity: 0.72;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      @keyframes orb-pulse-b {
+        0%,
+        100% {
+          opacity: 0.64;
+        }
+        50% {
+          opacity: 0.92;
+        }
+      }
+
       @keyframes grid-breathe {
         0%,
         100% {
@@ -301,6 +364,26 @@
         }
         50% {
           opacity: 0.82;
+        }
+      }
+
+      @keyframes grid-shimmer {
+        0% {
+          opacity: 0;
+          transform: translate3d(-42%, -24%, 0);
+        }
+        18% {
+          opacity: 0.55;
+        }
+        50% {
+          opacity: 0.9;
+        }
+        82% {
+          opacity: 0.35;
+        }
+        100% {
+          opacity: 0;
+          transform: translate3d(42%, 24%, 0);
         }
       }
 
@@ -482,14 +565,24 @@
             56px 56px;
         }
 
-        .scene__gravity {
-          width: min(102vw, 27rem);
+        .scene__orb--a {
+          width: 110vw;
+          top: -28%;
+          left: -58%;
+        }
+
+        .scene__orb--b {
+          width: 105vw;
+          right: -54%;
+          bottom: -24%;
         }
       }
 
       @media (prefers-reduced-motion: reduce) {
         .scene__mesh,
+        .scene__orb,
         .scene__grid,
+        .scene__grid::after,
         .brand-mark,
         .wordmark,
         .tagline {
@@ -530,8 +623,15 @@
     <div class="scene" aria-hidden="true">
       <div class="scene__base"></div>
       <div class="scene__mesh"></div>
-      <canvas class="scene__accretion" id="accretion-disk"></canvas>
-      <div class="scene__gravity"></div>
+
+      <div class="scene__pointer scene__pointer--a">
+        <div class="scene__orb scene__orb--a"></div>
+      </div>
+
+      <div class="scene__pointer scene__pointer--b">
+        <div class="scene__orb scene__orb--b"></div>
+      </div>
+
       <div class="scene__grid"></div>
       <div class="scene__noise"></div>
       <div class="scene__vignette"></div>
@@ -558,6 +658,51 @@
       </div>
     </main>
 
-    <script src="accretion.js" defer></script>
+    <script>
+      (() => {
+        const reducedMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        );
+
+        const finePointer = window.matchMedia("(pointer: fine)");
+
+        if (reducedMotion.matches || !finePointer.matches) {
+          return;
+        }
+
+        const root = document.documentElement;
+        let frame = 0;
+
+        const updatePointer = (event) => {
+          if (frame) {
+            return;
+          }
+
+          frame = requestAnimationFrame(() => {
+            const x = event.clientX / window.innerWidth - 0.5;
+            const y = event.clientY / window.innerHeight - 0.5;
+
+            root.style.setProperty("--pointer-a-x", `${x * 18}px`);
+            root.style.setProperty("--pointer-a-y", `${y * 14}px`);
+            root.style.setProperty("--pointer-b-x", `${x * -12}px`);
+            root.style.setProperty("--pointer-b-y", `${y * -16}px`);
+
+            frame = 0;
+          });
+        };
+
+        const resetPointer = () => {
+          root.style.setProperty("--pointer-a-x", "0px");
+          root.style.setProperty("--pointer-a-y", "0px");
+          root.style.setProperty("--pointer-b-x", "0px");
+          root.style.setProperty("--pointer-b-y", "0px");
+        };
+
+        window.addEventListener("pointermove", updatePointer, {
+          passive: true
+        });
+        document.documentElement.addEventListener("mouseleave", resetPointer);
+      })();
+    </script>
   </body>
 </html>
