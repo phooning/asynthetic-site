@@ -436,6 +436,14 @@ a {
   -webkit-backdrop-filter: blur(14px) saturate(120%);
   border-bottom: 1px solid transparent;
   transition: background 0.3s ease, border-color 0.3s ease;
+
+  /* Experimental: same scroll-synced chromatic fringe as .project-panel
+     (see base.css --scene-light), applied to the seam where the fixed
+     header meets the brightening scene below it. Inert at 0. */
+  box-shadow:
+    0 1px 0 rgba(255, 99, 164, calc(var(--scene-light, 0) * 0.32)),
+    0 2px 0 rgba(105, 220, 230, calc(var(--scene-light, 0) * 0.28)),
+    0 18px 40px -22px rgba(200, 214, 255, calc(var(--scene-light, 0) * 0.55));
 }
 
 .site-nav.is-scrolled {
