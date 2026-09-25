@@ -14,7 +14,17 @@
   --white: #f4f6fa;
   --silver: #b3bac8;
   --muted: #747b89;
-  --ink-on-light: #16102a;
+
+  /* Asynthetic's own accent. Products keep theirs (SIGMA = cyan). */
+  --accent: #6867e8;
+  --accent-text: #a5a4f3;
+  --eyebrow: var(--accent-text);
+
+  /* Text colours for the lit (light slate) state of the SIGMA section. */
+  --lit-ink: #1d2430;
+  --lit-body: #4f5969;
+  --lit-eyebrow: #444c5a;
+  --lit-rule: #8e99aa;
 
   --border: rgba(244, 246, 250, 0.09);
   --border-strong: rgba(244, 246, 250, 0.16);
@@ -43,15 +53,33 @@
   --pointer-b-y: 0px;
 
   --scene-light: 0;
+  --scene-tone: 0;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --nav-height: 4.25rem;
+
+  transition: --scene-tone 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Palette flips via --scene-tone, not scroll-scrubbed: scrubbing text and background together crosses them at 1:1 contrast. */
 @property --scene-light {
   syntax: "<number>";
   inherits: true;
   initial-value: 0;
+}
+
+@property --scene-tone {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+:root.is-sigma-lit {
+  --scene-tone: 1;
+}
+
+[data-product="sigma"] {
+  --eyebrow: var(--cyan);
 }
 
 *,
@@ -169,8 +197,6 @@ a {
     var(--background)
   );
   contain: paint;
-  filter: brightness(calc(1 + var(--scene-light, 0) * 0.24))
-    saturate(calc(1 + var(--scene-light, 0) * 0.15));
 }
 
 .scene__base,
@@ -185,28 +211,24 @@ a {
   pointer-events: none;
 }
 
-/* Daylight wash — crossfades in as the SIGMA work panel nears the
-   viewport center (driven by --scene-light, set from scroll position
-   in main.js), then recedes as the panel scrolls past. */
+/* Last layer in .scene, so when lit it covers the dark atmosphere entirely. */
 .scene__daylight {
-  inset: -12%;
+  inset: 0;
   background:
     radial-gradient(
-      120% 85% at 50% 32%,
-      rgba(214, 224, 255, 0.92) 0%,
-      rgba(163, 197, 240, 0.56) 32%,
-      rgba(105, 220, 230, 0.26) 58%,
-      transparent 80%
+      circle at 48% 62%,
+      rgba(104, 103, 232, 0.08),
+      transparent 38%
     ),
-    linear-gradient(
-      180deg,
-      rgba(238, 242, 255, 0.4) 0%,
-      rgba(196, 214, 255, 0.14) 45%,
-      transparent 75%
-    );
-  opacity: var(--scene-light, 0);
-  mix-blend-mode: screen;
-  will-change: opacity;
+    linear-gradient(rgba(29, 36, 48, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(29, 36, 48, 0.035) 1px, transparent 1px),
+    linear-gradient(135deg, #edf0f5 0%, #e4e9f0 55%, #dce4ec 100%);
+  background-size:
+    auto,
+    72px 72px,
+    72px 72px,
+    auto;
+  opacity: var(--scene-tone, 0);
 }
 
 .scene__base {
@@ -353,7 +375,6 @@ a {
 
 .scene__vignette {
   inset: 0;
-  opacity: calc(1 - var(--scene-light, 0) * 0.55);
   background:
     linear-gradient(
       180deg,
@@ -493,7 +514,7 @@ a {
   bottom: -2px;
   width: 100%;
   height: 1px;
-  background: var(--cyan);
+  background: var(--accent-text);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.25s var(--ease-out-expo);
@@ -667,8 +688,8 @@ section {
   text-transform: uppercase;
   color: color-mix(
     in srgb,
-    var(--cyan),
-    var(--ink-on-light) calc(var(--scene-light, 0) * 80%)
+    var(--eyebrow),
+    var(--lit-eyebrow) calc(var(--scene-tone, 0) * 100%)
   );
 }
 
@@ -678,10 +699,10 @@ section {
   height: 1px;
   background: color-mix(
     in srgb,
-    var(--cyan),
-    var(--ink-on-light) calc(var(--scene-light, 0) * 80%)
+    var(--eyebrow),
+    var(--lit-rule) calc(var(--scene-tone, 0) * 100%)
   );
-  opacity: 0.7;
+  opacity: calc(0.7 + var(--scene-tone, 0) * 0.3);
 }
 
 .section-head h2 {
@@ -692,16 +713,16 @@ section {
   color: color-mix(
     in srgb,
     var(--white),
-    var(--ink-on-light) calc(var(--scene-light, 0) * 78%)
+    var(--lit-ink) calc(var(--scene-tone, 0) * 100%)
   );
 }
 
-.section-head p {
+.section-head p:not(.eyebrow) {
   margin: 0;
   color: color-mix(
     in srgb,
     var(--silver),
-    var(--ink-on-light) calc(var(--scene-light, 0) * 92%)
+    var(--lit-body) calc(var(--scene-tone, 0) * 100%)
   );
   font-size: clamp(0.98rem, 1.3vw, 1.08rem);
   line-height: 1.65;

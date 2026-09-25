@@ -8,12 +8,12 @@
   gap: 0.5rem;
   padding: 0.75rem 1.25rem;
   border-radius: 4px;
-  border: 1px solid var(--border-strong);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   font-size: 0.92rem;
   font-weight: 500;
   text-decoration: none;
-  color: var(--white);
-  background: transparent;
+  color: #d8dce5;
+  background: rgba(255, 255, 255, 0.025);
   cursor: pointer;
   transition:
     background 0.2s ease,
@@ -28,8 +28,9 @@
 
 .btn:hover,
 .btn:focus-visible {
-  border-color: var(--cyan);
-  background: rgba(105, 220, 230, 0.06);
+  border-color: rgba(165, 164, 243, 0.45);
+  background: rgba(104, 103, 232, 0.08);
+  color: var(--white);
 }
 
 .btn:active {
@@ -37,20 +38,21 @@
 }
 
 .btn--primary {
-  background: var(--white);
-  color: var(--background-deep);
-  border-color: var(--white);
+  background: #f4f6fb;
+  color: #11151c;
+  border-color: #f4f6fb;
 }
 
 .btn--primary:hover,
 .btn--primary:focus-visible {
-  background: var(--cyan);
-  border-color: var(--cyan);
-  color: var(--background-deep);
+  background: color-mix(in srgb, #f4f6fb, var(--accent) 14%);
+  border-color: color-mix(in srgb, #f4f6fb, var(--accent) 14%);
+  color: #11151c;
 }
 
 .btn--ghost {
   border-color: transparent;
+  background: none;
   color: var(--silver);
   padding-inline: 0.25rem;
 }
@@ -148,32 +150,25 @@
   gap: clamp(1.5rem, 4vw, 3rem);
   align-items: center;
   padding: clamp(1.5rem, 3vw, 2.5rem);
-
-  /* Experimental: as --scene-light rises (scroll-synced daylight, see
-     base.css), the card's edges pick up a slight chromatic split — a
-     magenta/cyan fringe hugging opposite sides, like light refracting
-     at the boundary between the panel and the brightening scene —
-     plus a soft bloom underneath it. Inert at --scene-light: 0. */
-  border-color: color-mix(
-    in srgb,
-    var(--border),
-    rgba(214, 224, 255, 0.85) calc(var(--scene-light, 0) * 55%)
-  );
+  background: #0d1017;
+  border-color: rgba(119, 143, 175, 0.28);
+  border-radius: 10px;
+  /* Depth instead of outline; the violet/cyan pool below scrubs with scroll so the product reads as the light source. */
   box-shadow:
-    -1.5px 0 0 rgba(255, 99, 164, calc(var(--scene-light, 0) * 0.4)),
-    1.5px 0 0 rgba(105, 220, 230, calc(var(--scene-light, 0) * 0.4)),
-    0 -1.5px 0 rgba(196, 214, 255, calc(var(--scene-light, 0) * 0.32)),
-    0 1.5px 0 rgba(108, 92, 235, calc(var(--scene-light, 0) * 0.28)),
-    0 40px 90px -32px rgba(210, 222, 255, calc(var(--scene-light, 0) * 0.6));
+    0 28px 80px rgba(22, 30, 45, 0.18),
+    0 0 90px rgba(104, 103, 232, 0.06),
+    0 50px 120px -30px rgba(104, 103, 232, calc(var(--scene-light, 0) * 0.2)),
+    0 70px 140px -50px rgba(105, 220, 230, calc(var(--scene-light, 0) * 0.08));
 }
 
 .project-panel__media {
   position: relative;
   overflow: hidden;
   border-radius: 4px;
-  border: 1px solid var(--border-strong);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   aspect-ratio: 16 / 10;
   background: var(--background-deep);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
 }
 
 .project-panel__media img {
@@ -181,6 +176,7 @@
   height: 100%;
   object-fit: cover;
   object-position: top left;
+  filter: brightness(1.07);
   transition: transform 0.6s var(--ease-out-expo);
 }
 

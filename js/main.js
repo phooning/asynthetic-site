@@ -83,17 +83,21 @@
     document.documentElement.addEventListener("mouseleave", resetPointer);
   }
 
-  /* Scroll-synced daylight — as the SIGMA panel [data-scene-trigger]
-     nears the center of the viewport, --scene-light ramps from 0 to 1
-     and the fixed .scene background eases into lighter hues (see
-     .scene__daylight, .scene filter, .scene__vignette in base.css).
-     The value is a triangular function of scroll position: 0 while the
-     panel is off-screen, 1 at dead center, back to 0 once it has
-     scrolled past — a spotlight tied to the SIGMA section, not a
-     permanent theme change. */
+  /* SIGMA section: --scene-light (0..1, peak when the panel is centred)
+     scrubs the ambient glow; html.is-sigma-lit flips the palette. */
   const sceneTrigger = document.querySelector("[data-scene-trigger]");
   if (sceneTrigger) {
     const root = document.documentElement;
+    let lit = false;
+
+    // Hysteresis so the palette doesn't flicker when scrolling stops near the threshold.
+    const updateTone = (value) => {
+      const next = lit ? value >= 0.4 : value >= 0.5;
+      if (next !== lit) {
+        lit = next;
+        root.classList.toggle("is-sigma-lit", lit);
+      }
+    };
 
     const targetSceneLight = () => {
       const rect = sceneTrigger.getBoundingClientRect();
@@ -111,7 +115,9 @@
          scroll position, it just snaps instead of animating. */
       let ticking = false;
       const snap = () => {
-        root.style.setProperty("--scene-light", targetSceneLight().toFixed(4));
+        const value = targetSceneLight();
+        root.style.setProperty("--scene-light", value.toFixed(4));
+        updateTone(value);
         ticking = false;
       };
       const onScroll = () => {
@@ -129,6 +135,7 @@
       let ticking = false;
 
       root.style.setProperty("--scene-light", current.toFixed(4));
+      updateTone(target);
 
       const settled = () => Math.abs(target - current) < 0.001;
 
@@ -155,6 +162,7 @@
         ticking = true;
         requestAnimationFrame(() => {
           target = targetSceneLight();
+          updateTone(target);
           ensureLoop();
           ticking = false;
         });
