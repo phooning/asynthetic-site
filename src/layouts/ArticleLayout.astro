@@ -1,0 +1,65 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  updated?: Date;
+  tags?: string[];
+  canonicalPath: string;
+  draft?: boolean;
+}
+
+const {
+  title,
+  description,
+  date,
+  updated,
+  tags = [],
+  canonicalPath,
+  draft = false,
+} = Astro.props;
+
+const formatDate = (value: Date) =>
+  new Intl.DateTimeFormat("en", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(value);
+---
+
+<BaseLayout
+  title={`${title} | Asynthetic`}
+  description={description}
+  canonicalPath={canonicalPath}
+  noindex={draft}
+>
+  <main id="main" class="article-shell">
+    <article class="article container">
+      <header class="article__header">
+        <p class="eyebrow">Asynthetic writing</p>
+        <h1>{title}</h1>
+        <p class="article__description">{description}</p>
+        <div class="article__meta">
+          <time datetime={date.toISOString()}>{formatDate(date)}</time>
+          {
+            updated && (
+              <span>
+                Updated <time datetime={updated.toISOString()}>{formatDate(updated)}</time>
+              </span>
+            )
+          }
+        </div>
+        {
+          tags.length > 0 && (
+            <ul class="article__tags" aria-label="Tags">
+              {tags.map((tag) => <li>{tag}</li>)}
+            </ul>
+          )
+        }
+      </header>
+      <div class="article__content"><slot /></div>
+    </article>
+  </main>
+</BaseLayout>

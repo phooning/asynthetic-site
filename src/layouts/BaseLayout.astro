@@ -1,0 +1,84 @@
+---
+import SceneBackground from "../components/layout/SceneBackground.astro";
+import SiteFooter from "../components/layout/SiteFooter.astro";
+import SiteHeader from "../components/layout/SiteHeader.astro";
+import { site } from "../data/site";
+import "../styles/global.css";
+import "../styles/components.css";
+import "../styles/pages.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  socialDescription?: string;
+  canonicalPath?: string;
+  image?: string;
+  bodyProduct?: string;
+  preloadImage?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = site.title,
+  description = site.description,
+  socialDescription = description,
+  canonicalPath = Astro.url.pathname,
+  image = site.defaultImage,
+  bodyProduct,
+  preloadImage,
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(canonicalPath, site.url).toString();
+const socialImage = new URL(image, site.url).toString();
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: site.name,
+  url: site.url,
+  description: site.description,
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta name="theme-color" content="#07080b" />
+    <meta name="color-scheme" content="dark" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={socialDescription} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={socialDescription} />
+    <meta name="twitter:image" content={socialImage} />
+
+    <link rel="icon" type="image/png" href={site.logo} />
+    <link rel="apple-touch-icon" href={site.logo} />
+    {preloadImage && <link rel="preload" as="image" href={preloadImage} />}
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  </head>
+  <body data-product={bodyProduct}>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <SceneBackground />
+    <SiteHeader />
+    <slot />
+    <SiteFooter />
+    <script>
+      import "../scripts/site";
+    </script>
+  </body>
+</html>

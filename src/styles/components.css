@@ -102,7 +102,7 @@
   background: rgba(105, 220, 230, 0.06);
 }
 .badge--shipped::before {
-  background: var(--status-shipped);
+  content: none;
 }
 
 .badge--wip {
@@ -120,7 +120,7 @@
   background: rgba(255, 255, 255, 0.02);
 }
 .badge--planned::before {
-  background: var(--status-planned);
+  content: none;
 }
 
 /* Cards */
@@ -130,16 +130,6 @@
   border: 1px solid var(--border);
   background: var(--background-panel);
   border-radius: 6px;
-}
-
-.card--interactive {
-  transition:
-    border-color 0.25s ease,
-    transform 0.25s var(--ease-out-expo);
-}
-
-.card--interactive:hover {
-  border-color: var(--border-strong);
 }
 
 /* Project feature panel (homepage "Current Work") */
@@ -156,9 +146,16 @@
   /* Depth instead of outline; the violet/cyan pool below scrubs with scroll so the product reads as the light source. */
   box-shadow:
     0 28px 80px rgba(22, 30, 45, 0.18),
+    0 0 90px rgba(104, 103, 232, 0.06);
+  transition: box-shadow 0.55s ease;
+}
+
+.project-panel.is-scene-active {
+  box-shadow:
+    0 28px 80px rgba(22, 30, 45, 0.18),
     0 0 90px rgba(104, 103, 232, 0.06),
-    0 50px 120px -30px rgba(104, 103, 232, calc(var(--scene-light, 0) * 0.2)),
-    0 70px 140px -50px rgba(105, 220, 230, calc(var(--scene-light, 0) * 0.08));
+    0 50px 120px -30px rgba(104, 103, 232, 0.2),
+    0 70px 140px -50px rgba(105, 220, 230, 0.08);
 }
 
 .project-panel__media {
@@ -354,6 +351,8 @@
   align-items: center;
   padding-block: clamp(2.5rem, 6vw, 4rem);
   border-top: 1px solid var(--border);
+  content-visibility: auto;
+  contain-intrinsic-size: auto 36rem;
 }
 
 .capability:first-of-type {
@@ -456,6 +455,8 @@
   display: grid;
   gap: 0;
   border-top: 1px solid var(--border);
+  content-visibility: auto;
+  contain-intrinsic-size: auto 30rem;
 }
 
 .use-case {
@@ -573,6 +574,8 @@
   border-radius: 6px;
   overflow: hidden;
   margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  content-visibility: auto;
+  contain-intrinsic-size: auto 10rem;
 }
 
 .meta-row__item {
@@ -594,71 +597,4 @@
   font-size: 0.92rem;
   color: var(--white);
   line-height: 1.4;
-}
-
-/* Roadmap comparison table */
-
-.roadmap-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-}
-
-.roadmap-table caption {
-  text-align: left;
-  margin-bottom: 1rem;
-}
-
-.roadmap-table th,
-.roadmap-table td {
-  text-align: left;
-  padding: 0.85rem 1rem;
-  border-bottom: 1px solid var(--border);
-  vertical-align: top;
-  line-height: 1.5;
-}
-
-.roadmap-table thead th {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-  border-bottom: 1px solid var(--border-strong);
-}
-
-.roadmap-table tbody th {
-  color: var(--white);
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.roadmap-table td {
-  color: var(--silver);
-}
-
-.roadmap-table thead th:nth-child(2) {
-  color: var(--cyan);
-}
-
-.roadmap-table-wrap {
-  overflow-x: auto;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-}
-
-.roadmap-table-wrap .roadmap-table {
-  min-width: 34rem;
-}
-
-.roadmap-table-wrap .roadmap-table th,
-.roadmap-table-wrap .roadmap-table td {
-  border-color: var(--border);
-}
-
-.roadmap-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 1.5rem;
-  margin-top: 1.25rem;
 }

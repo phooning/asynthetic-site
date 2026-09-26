@@ -47,12 +47,6 @@
     "IBM Plex Mono", ui-monospace, "SF Mono", "Menlo", "Cascadia Code",
     monospace;
 
-  --pointer-a-x: 0px;
-  --pointer-a-y: 0px;
-  --pointer-b-x: 0px;
-  --pointer-b-y: 0px;
-
-  --scene-light: 0;
   --scene-tone: 0;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -62,12 +56,6 @@
 }
 
 /* Palette flips via --scene-tone, not scroll-scrubbed: scrubbing text and background together crosses them at 1:1 contrast. */
-@property --scene-light {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 0;
-}
-
 @property --scene-tone {
   syntax: "<number>";
   inherits: true;
@@ -196,7 +184,7 @@ a {
     var(--background-raised),
     var(--background)
   );
-  contain: paint;
+  contain: layout paint style;
 }
 
 .scene__base,
@@ -262,10 +250,7 @@ a {
     radial-gradient(circle at 53% 48%, rgba(255, 255, 255, 0.05), transparent 25%);
   opacity: 0.9;
   transform: translate3d(-2%, -1%, 0) scale(1.04);
-  animation:
-    mesh-float 11s ease-in-out infinite alternate,
-    mesh-pulse 7s ease-in-out infinite;
-  will-change: transform;
+  animation: mesh-float 11s ease-in-out infinite alternate;
 }
 
 .scene__pointer {
@@ -274,17 +259,16 @@ a {
 }
 
 .scene__pointer--a {
-  transform: translate3d(var(--pointer-a-x), var(--pointer-a-y), 0);
+  transform: translate3d(0, 0, 0);
 }
 
 .scene__pointer--b {
-  transform: translate3d(var(--pointer-b-x), var(--pointer-b-y), 0);
+  transform: translate3d(0, 0, 0);
 }
 
 .scene__orb {
   position: absolute;
   border-radius: 50%;
-  will-change: transform;
 }
 
 .scene__orb--a {
@@ -298,9 +282,7 @@ a {
     rgba(108, 92, 235, 0.16) 32%,
     transparent 70%
   );
-  animation:
-    orb-a 9s ease-in-out infinite alternate,
-    orb-pulse-a 6s ease-in-out infinite;
+  animation: orb-a 9s ease-in-out infinite alternate;
 }
 
 .scene__orb--b {
@@ -314,9 +296,7 @@ a {
     rgba(105, 220, 230, 0.09) 34%,
     transparent 72%
   );
-  animation:
-    orb-b 11s ease-in-out infinite alternate,
-    orb-pulse-b 8s ease-in-out infinite;
+  animation: orb-b 11s ease-in-out infinite alternate;
 }
 
 .scene__sweep {
@@ -332,8 +312,7 @@ a {
   mix-blend-mode: screen;
   opacity: 0;
   transform: translate3d(-60%, -8%, 0);
-  animation: scene-sweep 10s ease-in-out infinite;
-  will-change: transform, opacity;
+  animation: scene-sweep 14s ease-in-out 1 both;
 }
 
 .scene__grid {
@@ -406,27 +385,12 @@ a {
   to { transform: translate3d(-7vw, -8vh, 0) scale(1.09); }
 }
 
-@keyframes mesh-pulse {
-  0%, 100% { opacity: 0.72; }
-  50% { opacity: 0.96; }
-}
-
 @keyframes scene-sweep {
   0% { transform: translate3d(-60%, -8%, 0); opacity: 0; }
   10% { opacity: 0.85; }
   38% { transform: translate3d(60%, 8%, 0); opacity: 0.85; }
   48% { opacity: 0; }
   100% { transform: translate3d(60%, 8%, 0); opacity: 0; }
-}
-
-@keyframes orb-pulse-a {
-  0%, 100% { opacity: 0.72; }
-  50% { opacity: 1; }
-}
-
-@keyframes orb-pulse-b {
-  0%, 100% { opacity: 0.64; }
-  50% { opacity: 0.92; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -452,19 +416,19 @@ a {
   justify-content: space-between;
   height: var(--nav-height);
   padding-inline: var(--edge);
-  background: rgba(7, 8, 11, 0.56);
-  backdrop-filter: blur(14px) saturate(120%);
-  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  background: rgba(7, 8, 11, 0.9);
   border-bottom: 1px solid transparent;
-  transition: background 0.3s ease, border-color 0.3s ease;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.55s ease;
+}
 
-  /* Experimental: same scroll-synced chromatic fringe as .project-panel
-     (see base.css --scene-light), applied to the seam where the fixed
-     header meets the brightening scene below it. Inert at 0. */
+.site-nav.is-product-active {
   box-shadow:
-    0 1px 0 rgba(255, 99, 164, calc(var(--scene-light, 0) * 0.32)),
-    0 2px 0 rgba(105, 220, 230, calc(var(--scene-light, 0) * 0.28)),
-    0 18px 40px -22px rgba(200, 214, 255, calc(var(--scene-light, 0) * 0.55));
+    0 1px 0 rgba(255, 99, 164, 0.32),
+    0 2px 0 rgba(105, 220, 230, 0.28),
+    0 18px 40px -22px rgba(200, 214, 255, 0.55);
 }
 
 .site-nav.is-scrolled {
@@ -567,7 +531,6 @@ a {
     gap: 0;
     padding: 0.5rem var(--edge) 1.5rem;
     background: rgba(7, 8, 11, 0.97);
-    backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
     transform: translateY(-8px);
     opacity: 0;
