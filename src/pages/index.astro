@@ -1,0 +1,123 @@
+---
+import ProjectPanel from "../components/project/ProjectPanel.astro";
+import ArrowDown from "../components/ui/ArrowDown.astro";
+import SectionHeading from "../components/ui/SectionHeading.astro";
+import { projects } from "../data/projects";
+import { site } from "../data/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const sigmaHighlights = [
+  "Infinite spatial canvas",
+  "Media as first-class spatial objects",
+  "Frame-accurate video interaction",
+  "Crop, resize, A/B loops",
+  "Saved spatial workflows",
+  "Local-first Rust media pipeline",
+  "Lightweight Tauri desktop shell",
+  "ComfyUI integration (in progress)"
+] as const;
+
+const principles = [
+  {
+    title: "Human-over-the-loop",
+    description:
+      "Interfaces must make human control clear as systems become more autonomous."
+  },
+  {
+    title: "Spatial systems",
+    description:
+      "Information and machine state are effective spatially than through traditional linear interfaces."
+  },
+  {
+    title: "Local capability",
+    description:
+      "Practical computation and data remain local, inspectable, and under the operator's control."
+  },
+  {
+    title: "Verification",
+    description:
+      "Autonomy should be paired with deterministic interfaces, observability, testing, and human review."
+  }
+] as const;
+---
+
+<BaseLayout
+  title={site.title}
+  description={site.description}
+  socialDescription={site.socialDescription}
+  canonicalPath="/"
+  preloadImage={site.logo}
+>
+  <main id="main">
+    <section class="hero">
+      <div class="hero__content">
+        <div class="brand-mark">
+          <img
+            class="brand-mark__image"
+            src={site.logo}
+            width="1000"
+            height="1000"
+            alt=""
+            decoding="async"
+            fetchpriority="high"
+          />
+        </div>
+        <h1 class="wordmark">ASYNTHETIC</h1>
+        <p class="hero__tagline">
+          Engineering the human layer of autonomous systems, machines, and
+          software. Interfaces for people in command as machines work.
+        </p>
+
+        <a class="hero__scroll-cue" href="#work">
+          Current work
+          <ArrowDown />
+        </a>
+      </div>
+    </section>
+
+    <section id="work" class="section">
+      <div class="container container--wide">
+        <SectionHeading
+          eyebrow="Current work"
+          title="Building spatial infrastructure for media"
+          description="Asynthetic's work is published as it becomes real. The first is SIGMA, a desktop tool for working with large collections of visual media spatially rather than through folders and hierarchies."
+        />
+        <ProjectPanel project={projects.sigma} highlights={sigmaHighlights} />
+      </div>
+    </section>
+
+    <section id="approach" class="section">
+      <div class="container container--wide">
+        <SectionHeading
+          eyebrow="Approach"
+          title="What connects the work"
+          description="Four principles guide how we invent."
+        />
+
+        <div class="pillar-grid" data-reveal>
+          {
+            principles.map((principle, index) => (
+              <article class="pillar">
+                <span class="pillar__index">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3>{principle.title}</h3>
+                <p>{principle.description}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container">
+        <SectionHeading
+          eyebrow="About"
+          title="A forward facing engineering lab"
+          description="Asynthetic invents interfaces and infrastructure for the boundary between people and increasingly autonomous machines. As software becomes easier for machines to produce, the harder problem becomes keeping the resulting systems coherent, inspectable, and under human control."
+        />
+      </div>
+    </section>
+  </main>
+</BaseLayout>
