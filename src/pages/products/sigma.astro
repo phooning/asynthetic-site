@@ -174,7 +174,9 @@ const technologyDetails = [
             <source src="/assets/sigma/sigma-demo.mp4" type="video/mp4" />
           </video>
           <figcaption class="media-frame__caption">
-            <span>Canvas walkthrough, captured from the application</span>
+            <span
+              >Early release candidate walkthrough with multiple media assets.</span
+            >
             <span>source: phooning/sigma</span>
           </figcaption>
         </figure>
@@ -185,8 +187,8 @@ const technologyDetails = [
       <div class="container container--wide">
         <SectionHeading
           eyebrow="Capabilities"
-          title="What SIGMA actually does today"
-          description="Grounded in the current codebase and README, separated from what's in progress or only planned."
+          title="SIGMA's current active features"
+          description="A list of running integrated capabilities."
         />
 
         <div>
@@ -204,7 +206,7 @@ const technologyDetails = [
               </figure>
             </div>
             <div>
-              <span class="capability__index">01 · Spatial canvas</span>
+              <span class="capability__index">Spatial canvas</span>
               <h3>Drop media into an unbounded workspace</h3>
               <p>
                 Images and video are arranged directly on an effectively
@@ -233,9 +235,7 @@ const technologyDetails = [
               </figure>
             </div>
             <div>
-              <span class="capability__index"
-                >02 · Media-native interaction</span
-              >
+              <span class="capability__index">Media-native interaction</span>
               <h3>Video and images act as canvas objects</h3>
               <p>
                 Media that plays and is editable in place. Each clip carries its
@@ -267,7 +267,7 @@ const technologyDetails = [
               </div>
             </div>
             <div>
-              <span class="capability__index">03 · Local-first pipeline</span>
+              <span class="capability__index">Local-first pipeline</span>
               <h3>Rust handles media, not a remote service</h3>
               <p>
                 Decoding, frame access, and export run through a Rust backend
@@ -298,7 +298,7 @@ const technologyDetails = [
               </figure>
             </div>
             <div>
-              <span class="capability__index">04 · Persistent workflows</span>
+              <span class="capability__index">Persistent workflows</span>
               <h3>Save and reload a canvas layout</h3>
               <p>
                 A canvas configuration—every item's position, crop, and loop
@@ -326,7 +326,7 @@ const technologyDetails = [
               </figure>
             </div>
             <div>
-              <span class="capability__index">05 · Export</span>
+              <span class="capability__index">Export</span>
               <h3>Pull work back out as standard files</h3>
               <p>
                 Export is intentionally basic today: H.264 output for marked A/B
@@ -343,7 +343,7 @@ const technologyDetails = [
 
           <article class="capability capability--reverse" data-reveal>
             <div>
-              <span class="capability__index">06 · ComfyUI integration</span>
+              <span class="capability__index"> ComfyUI integration</span>
               <div class="capability__title-row">
                 <h3>Watch generation output land on the canvas</h3>
                 <StatusBadge variant="wip">WIP</StatusBadge>
