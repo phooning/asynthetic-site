@@ -30,5 +30,5 @@ explicit, content-first, and easy to inspect.
 
 ## Before finishing
 
-Run `npm run check` and `npm run build`. Confirm both live routes, assets,
+Run `pnpm check` and `pnpm build`. Confirm both live routes, assets,
 canonical metadata, sitemap output, and GitHub Pages assumptions remain valid.

@@ -1,0 +1,80 @@
+---
+import type { ImageMetadata } from "astro";
+import { getImage } from "astro:assets";
+
+/**
+ * A captioned video inside an article.
+ *
+ * `src` is either an imported local file (`import clip from "./clip.mp4"`),
+ * which is fingerprinted into the build, or a root-relative `/assets/...` path
+ * served unchanged from `public/`.
+ *
+ * `ambient` turns the clip into a muted loop that plays while in view (and
+ * never autoplays for reduced-motion visitors). Controls are always shown.
+ */
+interface Props {
+  src: string;
+  poster?: ImageMetadata | string;
+  caption?: string;
+  credit?: string;
+  width?: number;
+  height?: number;
+  ambient?: boolean;
+}
+
+const {
+  src,
+  poster,
+  caption,
+  credit,
+  width,
+  height,
+  ambient = false,
+} = Astro.props;
+
+const mediaTypes: Record<string, string> = {
+  mp4: "video/mp4",
+  m4v: "video/mp4",
+  webm: "video/webm",
+  mov: "video/quicktime",
+  ogv: "video/ogg",
+};
+const extension = src.split("?")[0].split(".").pop()?.toLowerCase() ?? "";
+const type = mediaTypes[extension];
+
+const posterSrc =
+  poster === undefined
+    ? undefined
+    : typeof poster === "string"
+      ? poster
+      : (await getImage({ src: poster, format: "webp", width: Math.min(poster.width, 1664) })).src;
+
+const videoWidth = width ?? (typeof poster === "object" ? poster.width : undefined);
+const videoHeight = height ?? (typeof poster === "object" ? poster.height : undefined);
+const hasCaption = Boolean(caption || credit);
+---
+
+<figure class="article-media media-frame">
+  <video
+    controls
+    playsinline
+    preload="metadata"
+    poster={posterSrc}
+    width={videoWidth}
+    height={videoHeight}
+    muted={ambient}
+    loop={ambient}
+    data-autoplay-in-view={ambient ? "" : undefined}
+  >
+    <source src={src} type={type} />
+    <a href={src}>Download the video</a>.
+  </video>
+  {
+    hasCaption && (
+      <figcaption class="media-frame__caption">
+        {caption && <span>{caption}</span>}
+        {credit && <span>{credit}</span>}
+      </figcaption>
+    )
+  }
+</figure>

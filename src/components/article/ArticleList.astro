@@ -1,0 +1,48 @@
+---
+import { Image } from "astro:assets";
+import { formatArticleDate, type Article } from "../../data/articles";
+
+/** Reverse-chronological list of article cards for a collection index. */
+interface Props {
+  articles: Article[];
+  basePath: string;
+}
+
+const { articles, basePath } = Astro.props;
+---
+
+{
+  articles.length === 0 ? (
+    <p class="post-index__empty">Nothing published yet.</p>
+  ) : (
+    <ol class="post-index" role="list">
+      {articles.map(({ id, data }, index) => (
+        <li class="post-card">
+          <a class="post-card__link" href={`${basePath}${id}/`}>
+            {data.cover && (
+              <div class="post-card__media">
+                <Image
+                  src={data.cover.src}
+                  alt=""
+                  widths={[320, 480, 720].filter((w) => w <= data.cover!.src.width)}
+                  sizes="(min-width: 40rem) 14rem, 100vw"
+                  loading={index === 0 ? "eager" : "lazy"}
+                />
+              </div>
+            )}
+            <div class="post-card__body">
+              <div class="article__meta">
+                <time datetime={data.date.toISOString()}>
+                  {formatArticleDate(data.date)}
+                </time>
+                {data.draft && <span class="article__draft">Draft</span>}
+              </div>
+              <h2>{data.title}</h2>
+              <p>{data.description}</p>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ol>
+  )
+}

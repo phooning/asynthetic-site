@@ -1,9 +1,10 @@
 import { defineConfig } from "astro/config";
+import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
   site: "https://asynthetic.io",
   output: "static",
   trailingSlash: "always",
-  integrations: [sitemap()],
+  integrations: [mdx(), sitemap()],
 });

@@ -131,23 +131,24 @@ if (heroMedia) {
   }
 }
 
-const demoVideo = document.querySelector<HTMLVideoElement>("[data-autoplay-in-view]");
-if (demoVideo) {
+const inViewVideos = document.querySelectorAll<HTMLVideoElement>("[data-autoplay-in-view]");
+if (inViewVideos.length > 0) {
   if (reducedMotion.matches) {
-    demoVideo.removeAttribute("autoplay");
+    inViewVideos.forEach((video) => video.removeAttribute("autoplay"));
   } else if ("IntersectionObserver" in window) {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          const video = entry.target as HTMLVideoElement;
           if (entry.isIntersecting) {
-            void demoVideo.play().catch(() => undefined);
+            void video.play().catch(() => undefined);
           } else {
-            demoVideo.pause();
+            video.pause();
           }
         });
       },
       { threshold: 0.35 },
     );
-    observer.observe(demoVideo);
+    inViewVideos.forEach((video) => observer.observe(video));
   }
 }
