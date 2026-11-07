@@ -15,7 +15,8 @@ issues without turning the site into an application.
 ## Repository map
 
 ```text
-public/                 Files served unchanged, including CNAME and media
+public/                 Files served unchanged: CNAME, video, icons, social images
+src/assets/            Images Astro resizes and converts to AVIF/WebP at build time
 src/components/layout/ Shared site chrome and ambient background
 src/components/article/Article media and listings
 src/components/project/Project-level presentation

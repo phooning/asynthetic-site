@@ -14,7 +14,6 @@ interface Props {
   canonicalPath?: string;
   image?: string;
   bodyProduct?: string;
-  preloadImage?: string;
   noindex?: boolean;
 }
 
@@ -25,7 +24,6 @@ const {
   canonicalPath = Astro.url.pathname,
   image = site.defaultImage,
   bodyProduct,
-  preloadImage,
   noindex = false,
 } = Astro.props;
 
@@ -67,8 +65,7 @@ const structuredData = {
     <meta name="twitter:image" content={socialImage} />
 
     <link rel="icon" type="image/png" href={site.logo} />
-    <link rel="apple-touch-icon" href={site.logo} />
-    {preloadImage && <link rel="preload" as="image" href={preloadImage} />}
+    <link rel="apple-touch-icon" href={site.logoLarge} />
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
   <body data-product={bodyProduct}>

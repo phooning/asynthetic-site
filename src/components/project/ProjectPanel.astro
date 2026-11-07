@@ -1,4 +1,5 @@
 ---
+import { Picture } from "astro:assets";
 import type { Project } from "../../data/projects";
 import ArrowRight from "../ui/ArrowRight.astro";
 import ExternalArrow from "../ui/ExternalArrow.astro";
@@ -11,9 +12,6 @@ interface Props {
 const { project, highlights } = Astro.props;
 const productLink = project.links.find((link) => !link.external);
 const sourceLink = project.links.find((link) => link.external);
-const srcset = project.media.heroSources
-  ?.map(({ src, width }) => `${src} ${width}w`)
-  .join(", ");
 ---
 
 <div class="card project-panel" data-reveal data-scene-trigger>
@@ -55,15 +53,13 @@ const srcset = project.media.heroSources
   </div>
 
   <div class="project-panel__media">
-    <img
+    <Picture
       src={project.media.hero}
-      srcset={srcset}
+      widths={[800, 1200, 1600]}
       sizes="(max-width: 60rem) 90vw, 40rem"
+      formats={["avif", "webp"]}
+      quality={70}
       alt="SIGMA's infinite canvas showing several video and image clips arranged spatially, with a video player panel open showing frame scrubbing and A/B loop controls"
-      loading="lazy"
-      decoding="async"
-      width="1600"
-      height="1000"
     />
   </div>
 </div>

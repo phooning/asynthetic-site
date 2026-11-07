@@ -25,6 +25,16 @@ demo video.
   `content-visibility: auto` with intrinsic-size estimates, so offscreen layout
   and paint can be deferred. Media dimensions and lazy loading prevent layout
   shifts.
+- **Images:** the SIGMA hero and detail screenshots live in `src/assets/` and
+  render through `<Picture>`/`<Image>`, so the browser gets responsive AVIF or
+  WebP instead of hand-sized JPEGs. Keep `public/` for files that must keep a
+  fixed URL (video, poster, favicon, social images). The header logo is a
+  96px file and the home hero a 384px one; never point small UI at the master.
+- **No image preloads:** the LCP image is an early `<img fetchpriority="high">`,
+  which the preload scanner already finds. A separate `<link rel="preload">`
+  cannot see `srcset`, so it fetched a second, differently sized file.
+- **Reveal states are JS-gated:** hidden "before" states use `.js-reveal`, which
+  the script adds, so content stays visible if the script never runs.
 
 Reduced-motion preferences still disable ambient animation and reveal effects.
 When adding interactive content, profile the production build, not only Astro's

@@ -227,26 +227,19 @@
   margin-bottom: 2rem;
 }
 
-/* Product hero media */
+/* Product hero media: a gentle scale-in layered on the generic reveal. */
 
 .product-hero__media {
   margin-top: clamp(2rem, 6vw, 3.5rem);
+}
+
+.product-hero__media.js-reveal {
   transform: scale(0.98);
-  opacity: 0;
-  transition: transform 0.8s var(--ease-out-expo), opacity 0.8s ease;
+  transition-duration: 0.8s;
 }
 
-.product-hero__media.is-visible {
-  transform: scale(1);
-  opacity: 1;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .product-hero__media {
-    transform: none;
-    opacity: 1;
-    transition: none;
-  }
+.product-hero__media.js-reveal.is-visible {
+  transform: none;
 }
 
 /* Wide demo video block */
