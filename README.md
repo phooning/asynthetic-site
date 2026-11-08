@@ -9,16 +9,16 @@ systems. The site is intentionally static, content-first, and dependency-light.
 Requires Node.js 22.12 or newer.
 
 ```bash
-npm ci
-npm run dev
+pnpm install --frozen-lockfile
+pnpm dev
 ```
 
 Useful commands:
 
 ```bash
-npm run check    # Astro and TypeScript validation
-npm run build    # production output in dist/
-npm run preview  # preview the production build
+pnpm check    # Astro and TypeScript validation
+pnpm build    # production output in dist/
+pnpm preview  # preview the production build
 ```
 
 ## Stack and deployment

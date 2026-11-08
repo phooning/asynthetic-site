@@ -1,11 +1,12 @@
 ---
-import { getCollection, render, type CollectionEntry } from "astro:content";
+import { render, type CollectionEntry } from "astro:content";
+import Figure from "../../components/article/Figure.astro";
+import Video from "../../components/article/Video.astro";
+import { getArticles } from "../../data/articles";
 import ArticleLayout from "../../layouts/ArticleLayout.astro";
 
 export async function getStaticPaths() {
-  const entries = await getCollection("blog", ({ data }) =>
-    import.meta.env.PROD ? !data.draft : true,
-  );
+  const entries = await getArticles("blog");
 
   return entries.map((entry) => ({
     params: { slug: entry.id },
@@ -21,6 +22,10 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
 
-<ArticleLayout {...entry.data} canonicalPath={`/blog/${entry.id}/`}>
-  <Content />
+<ArticleLayout
+  {...entry.data}
+  canonicalPath={`/blog/${entry.id}/`}
+  section={{ label: "Blog", href: "/blog/" }}
+>
+  <Content components={{ Figure, Video }} />
 </ArticleLayout>

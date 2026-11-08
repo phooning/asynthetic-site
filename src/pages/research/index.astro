@@ -1,0 +1,26 @@
+---
+import ArticleList from "../../components/article/ArticleList.astro";
+import { getArticles } from "../../data/articles";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const articles = await getArticles("research");
+const description = "Technical research from Asynthetic on autonomous systems and the interfaces that keep humans in control.";
+---
+
+<BaseLayout
+  title="Research | Asynthetic"
+  description={description}
+  canonicalPath="/research/"
+  noindex={articles.length === 0}
+>
+  <main id="main" class="article-shell">
+    <div class="container">
+      <header class="post-index__header">
+        <p class="eyebrow">Research</p>
+        <h1>Research</h1>
+        <p class="article__description">{description}</p>
+      </header>
+      <ArticleList articles={articles} basePath="/research/" />
+    </div>
+  </main>
+</BaseLayout>

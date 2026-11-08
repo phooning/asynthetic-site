@@ -1,3 +1,6 @@
+import type { ImageMetadata } from "astro";
+import hero from "../assets/sigma/hero.jpg";
+
 export interface ProjectLink {
   label: string;
   href: string;
@@ -6,8 +9,7 @@ export interface ProjectLink {
 
 export interface ProjectMedia {
   wordmark: string;
-  hero: string;
-  heroSources?: readonly { src: string; width: number }[];
+  hero: ImageMetadata;
   socialImage: string;
 }
 
@@ -44,15 +46,8 @@ export const projects = {
     ],
     media: {
       wordmark: "/assets/sigma/sigma-wordmark.svg",
-      hero: "/assets/sigma/sigma-hero-1200.jpg",
-      heroSources: [
-        { src: "/assets/sigma/sigma-hero-800.jpg", width: 800 },
-        { src: "/assets/sigma/sigma-hero-1200.jpg", width: 1200 },
-        { src: "/assets/sigma/sigma-hero-1600.jpg", width: 1600 },
-      ],
+      hero,
       socialImage: "/assets/sigma/sigma-og.jpg",
     },
   },
 } as const satisfies Record<string, Project>;
-
-export const projectList: Project[] = Object.values(projects);

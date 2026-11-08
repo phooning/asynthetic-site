@@ -1,4 +1,7 @@
 ---
+import type { ImageMetadata } from "astro";
+import { getImage, Image } from "astro:assets";
+import { formatArticleDate } from "../data/articles";
 import BaseLayout from "./BaseLayout.astro";
 
 interface Props {
@@ -7,7 +10,9 @@ interface Props {
   date: Date;
   updated?: Date;
   tags?: string[];
+  cover?: { src: ImageMetadata; alt: string };
   canonicalPath: string;
+  section: { label: string; href: string };
   draft?: boolean;
 }
 
@@ -17,39 +22,41 @@ const {
   date,
   updated,
   tags = [],
+  cover,
   canonicalPath,
+  section,
   draft = false,
 } = Astro.props;
 
-const formatDate = (value: Date) =>
-  new Intl.DateTimeFormat("en", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  }).format(value);
+const socialImage = cover
+  ? (await getImage({ src: cover.src, format: "jpg", width: Math.min(cover.src.width, 1200) })).src
+  : undefined;
 ---
 
 <BaseLayout
   title={`${title} | Asynthetic`}
   description={description}
   canonicalPath={canonicalPath}
+  image={socialImage}
   noindex={draft}
 >
   <main id="main" class="article-shell">
     <article class="article container">
       <header class="article__header">
-        <p class="eyebrow">Asynthetic writing</p>
+        <p class="eyebrow"><a href={section.href}>{section.label}</a></p>
         <h1>{title}</h1>
         <p class="article__description">{description}</p>
         <div class="article__meta">
-          <time datetime={date.toISOString()}>{formatDate(date)}</time>
+          <time datetime={date.toISOString()}>{formatArticleDate(date)}</time>
           {
             updated && (
               <span>
-                Updated <time datetime={updated.toISOString()}>{formatDate(updated)}</time>
+                Updated{" "}
+                <time datetime={updated.toISOString()}>{formatArticleDate(updated)}</time>
               </span>
             )
           }
+          {draft && <span class="article__draft">Draft</span>}
         </div>
         {
           tags.length > 0 && (
@@ -59,7 +66,24 @@ const formatDate = (value: Date) =>
           )
         }
       </header>
+      {
+        cover && (
+          <figure class="article__cover media-frame">
+            <Image
+              src={cover.src}
+              alt={cover.alt}
+              widths={[640, 960, 1280, 1664].filter((w) => w <= cover.src.width)}
+              sizes="(min-width: 56rem) 52rem, 100vw"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </figure>
+        )
+      }
       <div class="article__content"><slot /></div>
+      <footer class="article__footer">
+        <a href={section.href}>&larr; Back to {section.label}</a>
+      </footer>
     </article>
   </main>
 </BaseLayout>

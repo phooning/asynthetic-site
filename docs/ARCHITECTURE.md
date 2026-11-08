@@ -15,11 +15,13 @@ issues without turning the site into an application.
 ## Repository map
 
 ```text
-public/                 Files served unchanged, including CNAME and media
+public/                 Files served unchanged: CNAME, video, icons, social images
+src/assets/            Images Astro resizes and converts to AVIF/WebP at build time
 src/components/layout/ Shared site chrome and ambient background
+src/components/article/Article media and listings
 src/components/project/Project-level presentation
 src/components/ui/     Small, named interface concepts
-src/content/            Markdown blog and research entries
+src/content/            Markdown/MDX blog and research entries
 src/data/               Canonical site, navigation, and project metadata
 src/layouts/            Shared document and article shells
 src/pages/              Explicit static routes
@@ -45,8 +47,9 @@ without a concrete product requirement.
 
 ## Content flow
 
-Blog and research entries are Markdown files in their respective directories.
-Frontmatter is validated by `src/content.config.ts`:
+Blog and research entries are Markdown or MDX files, either single files or
+folders with co-located media. Frontmatter is validated by
+`src/content.config.ts`:
 
 ```yaml
 title: Required title
@@ -55,10 +58,16 @@ date: 2026-09-25
 updated: 2026-09-26 # optional
 tags: [interfaces, autonomy]
 draft: false
+cover: # optional, relative to the entry
+  src: ./cover.jpg
+  alt: Required when cover is set
 ```
 
-Entries generate `/blog/<id>/` or `/research/<id>/`. Production builds omit
-drafts. No placeholder articles are checked in.
+Entries generate `/blog/<id>/` or `/research/<id>/`, listed newest first on
+`/blog/` and `/research/` (`src/data/articles.ts` owns the query and draft
+rule). Production builds omit drafts; an index with no published entries is
+marked `noindex`. MDX entries get the `Figure` and `Video` components from
+`src/components/article/`. Authoring details are in `docs/CONTENT.md`.
 
 ## Deployment
 

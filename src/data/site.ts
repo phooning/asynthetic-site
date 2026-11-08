@@ -7,8 +7,9 @@ export const site = {
     "Solving the human-centric domain for autonomous systems, machines, and software.",
   url: "https://asynthetic.io",
   defaultImage: "/assets/sigma/sigma-og.jpg",
-  logo: "/assets/brand/logo_dec_blk_transp.png",
+  /** 96px mark for the header, footer, and favicon. */
+  logo: "/assets/brand/logo-96.png",
+  /** 384px mark for the home hero and the touch icon. */
+  logoLarge: "/assets/brand/logo-384.png",
   githubUrl: "https://github.com/phooning",
 } as const;
-
-export type Site = typeof site;

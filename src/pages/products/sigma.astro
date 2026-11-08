@@ -1,4 +1,9 @@
 ---
+import { Image, Picture } from "astro:assets";
+import detailExport from "../../assets/sigma/detail-export.jpg";
+import detailGrid from "../../assets/sigma/detail-grid.jpg";
+import detailPlayer from "../../assets/sigma/detail-player.jpg";
+import detailToolbar from "../../assets/sigma/detail-toolbar.jpg";
 import ArrowDown from "../../components/ui/ArrowDown.astro";
 import ExternalArrow from "../../components/ui/ExternalArrow.astro";
 import SectionHeading from "../../components/ui/SectionHeading.astro";
@@ -10,9 +15,6 @@ const project = projects.sigma;
 const githubUrl = project.links.find(
   (link) => "external" in link && link.external
 )?.href;
-const heroSrcset = project.media.heroSources
-  ?.map(({ src, width }) => `${src} ${width}w`)
-  .join(", ");
 
 const useCases = [
   {
@@ -73,7 +75,6 @@ const technologyDetails = [
   canonicalPath="/products/sigma/"
   image={project.media.socialImage}
   bodyProduct="sigma"
-  preloadImage={project.media.hero}
 >
   <main id="main">
     <section class="product-hero">
@@ -131,17 +132,17 @@ const technologyDetails = [
           </a>
         </div>
 
-        <div class="product-hero__media" data-hero-media>
+        <div class="product-hero__media" data-reveal>
           <figure class="media-frame">
-            <img
+            <Picture
               src={project.media.hero}
-              srcset={heroSrcset}
+              widths={[800, 1200, 1600]}
               sizes="(max-width: 84rem) 92vw, 80rem"
+              formats={["avif", "webp"]}
+              quality={70}
               alt="SIGMA's infinite canvas with six media items arranged spatially: film stills, an anime frame, a landscape photo, and a video panel open with frame scrubbing, A/B loop points, and a floating edit toolbar"
-              width="1600"
-              height="1066"
+              loading="eager"
               fetchpriority="high"
-              decoding="async"
             />
             <figcaption class="media-frame__caption">
               <span>SIGMA Media Canvas: application UI</span>
@@ -195,13 +196,9 @@ const technologyDetails = [
           <article class="capability" data-reveal>
             <div class="capability__media">
               <figure class="media-frame">
-                <img
-                  src="/assets/sigma/sigma-detail-grid.jpg"
+                <Image
+                  src={detailGrid}
                   alt="A media tile sitting on SIGMA's dot-grid infinite canvas, with the toolbar and item count visible along the top edge"
-                  width="900"
-                  height="600"
-                  loading="lazy"
-                  decoding="async"
                 />
               </figure>
             </div>
@@ -224,13 +221,9 @@ const technologyDetails = [
           <article class="capability capability--reverse" data-reveal>
             <div class="capability__media">
               <figure class="media-frame">
-                <img
-                  src="/assets/sigma/sigma-detail-player.jpg"
+                <Image
+                  src={detailPlayer}
                   alt="A video item open on the canvas showing playback controls, a scrub bar with A and B loop points, and a floating edit toolbar"
-                  width="800"
-                  height="1288"
-                  loading="lazy"
-                  decoding="async"
                 />
               </figure>
             </div>
@@ -287,13 +280,9 @@ const technologyDetails = [
           <article class="capability capability--reverse" data-reveal>
             <div class="capability__media">
               <figure class="media-frame">
-                <img
-                  src="/assets/sigma/sigma-detail-toolbar.jpg"
+                <Image
+                  src={detailToolbar}
                   alt="SIGMA's top toolbar with Save, Load, and Export actions, an audio track selector, and an item counter"
-                  width="900"
-                  height="58"
-                  loading="lazy"
-                  decoding="async"
                 />
               </figure>
             </div>
@@ -315,13 +304,9 @@ const technologyDetails = [
           <article class="capability" data-reveal>
             <div class="capability__media">
               <figure class="media-frame">
-                <img
-                  src="/assets/sigma/sigma-detail-export.jpg"
+                <Image
+                  src={detailExport}
                   alt="Video export controls on the canvas showing playback position, A and B loop markers, and a loop toggle"
-                  width="800"
-                  height="120"
-                  loading="lazy"
-                  decoding="async"
                 />
               </figure>
             </div>

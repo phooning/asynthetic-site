@@ -47,7 +47,7 @@ if (nav) {
 }
 
 const revealTargets = document.querySelectorAll<HTMLElement>("[data-reveal]");
-if (revealTargets.length && "IntersectionObserver" in window && !reducedMotion.matches) {
+if (revealTargets.length && !reducedMotion.matches) {
   revealTargets.forEach((element) => element.classList.add("js-reveal"));
   const observer = new IntersectionObserver(
     (entries) => {
@@ -102,52 +102,28 @@ if (sceneTrigger) {
     nav?.classList.toggle("is-product-active", active);
   };
 
-  if ("IntersectionObserver" in window) {
-    const observer = new IntersectionObserver(
-      ([entry]) => setProductSceneActive(entry.isIntersecting),
-      { rootMargin: "-28% 0px -28% 0px", threshold: 0 },
-    );
-    observer.observe(sceneTrigger);
-  }
+  new IntersectionObserver(
+    ([entry]) => setProductSceneActive(entry.isIntersecting),
+    { rootMargin: "-28% 0px -28% 0px", threshold: 0 },
+  ).observe(sceneTrigger);
 }
 
-const heroMedia = document.querySelector<HTMLElement>("[data-hero-media]");
-if (heroMedia) {
-  if ("IntersectionObserver" in window) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            heroMedia.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 },
-    );
-    observer.observe(heroMedia);
-  } else {
-    heroMedia.classList.add("is-visible");
-  }
-}
-
-const demoVideo = document.querySelector<HTMLVideoElement>("[data-autoplay-in-view]");
-if (demoVideo) {
-  if (reducedMotion.matches) {
-    demoVideo.removeAttribute("autoplay");
-  } else if ("IntersectionObserver" in window) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            void demoVideo.play().catch(() => undefined);
-          } else {
-            demoVideo.pause();
-          }
-        });
-      },
-      { threshold: 0.35 },
-    );
-    observer.observe(demoVideo);
-  }
+// Ambient and demo videos play only while in view; reduced-motion visitors
+// keep the controls and start playback themselves.
+const inViewVideos = document.querySelectorAll<HTMLVideoElement>("[data-autoplay-in-view]");
+if (inViewVideos.length > 0 && !reducedMotion.matches) {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const video = entry.target as HTMLVideoElement;
+        if (entry.isIntersecting) {
+          void video.play().catch(() => undefined);
+        } else {
+          video.pause();
+        }
+      });
+    },
+    { threshold: 0.35 },
+  );
+  inViewVideos.forEach((video) => observer.observe(video));
 }
