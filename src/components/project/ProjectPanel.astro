@@ -1,5 +1,4 @@
 ---
-import { Picture } from "astro:assets";
 import type { Project } from "../../data/projects";
 import ArrowRight from "../ui/ArrowRight.astro";
 import ExternalArrow from "../ui/ExternalArrow.astro";
@@ -53,13 +52,18 @@ const sourceLink = project.links.find((link) => link.external);
   </div>
 
   <div class="project-panel__media">
-    <Picture
-      src={project.media.hero}
-      widths={[800, 1200, 1600]}
-      sizes="(max-width: 60rem) 90vw, 40rem"
-      formats={["avif", "webp"]}
-      quality={70}
-      alt="SIGMA's infinite canvas showing several video and image clips arranged spatially, with a video player panel open showing frame scrubbing and A/B loop controls"
-    />
+    <video
+      data-autoplay-in-view
+      muted
+      loop
+      playsinline
+      preload="none"
+      poster="/assets/sigma/sigma-demo-poster.jpg"
+      width="1280"
+      height="832"
+      aria-label="SIGMA's infinite canvas panning across video and image clips arranged spatially"
+    >
+      <source src="/assets/sigma/sigma-demo.mp4" type="video/mp4" />
+    </video>
   </div>
 </div>

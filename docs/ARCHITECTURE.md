@@ -75,3 +75,6 @@ Astro builds a static `dist/` directory. GitHub Actions installs from the lock
 file, runs `astro check`, builds, uploads the Pages artifact, and deploys it.
 `public/CNAME` preserves the `asynthetic.io` custom domain; the configured
 `site` URL keeps canonical and asset URLs correct.
+
+For the media and animation audit and a scoped scene authoring guide, see
+[CINEMATIC-ENGINEERING.md](CINEMATIC-ENGINEERING.md).
