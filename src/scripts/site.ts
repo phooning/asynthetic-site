@@ -47,7 +47,7 @@ if (nav) {
 }
 
 const revealTargets = document.querySelectorAll<HTMLElement>("[data-reveal]");
-if (revealTargets.length && !reducedMotion.matches) {
+if (revealTargets.length && !reducedMotion.matches && "IntersectionObserver" in window) {
   revealTargets.forEach((element) => element.classList.add("js-reveal"));
   const observer = new IntersectionObserver(
     (entries) => {
@@ -93,7 +93,7 @@ if (!reducedMotion.matches && finePointer.matches && scene) {
 }
 
 const sceneTrigger = document.querySelector<HTMLElement>("[data-scene-trigger]");
-if (sceneTrigger) {
+if (sceneTrigger && "IntersectionObserver" in window) {
   const root = document.documentElement;
 
   const setProductSceneActive = (active: boolean) => {
@@ -108,22 +108,12 @@ if (sceneTrigger) {
   ).observe(sceneTrigger);
 }
 
-// Ambient and demo videos play only while in view; reduced-motion visitors
-// keep the controls and start playback themselves.
-const inViewVideos = document.querySelectorAll<HTMLVideoElement>("[data-autoplay-in-view]");
-if (inViewVideos.length > 0 && !reducedMotion.matches) {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        const video = entry.target as HTMLVideoElement;
-        if (entry.isIntersecting) {
-          void video.play().catch(() => undefined);
-        } else {
-          video.pause();
-        }
-      });
-    },
-    { threshold: 0.35 },
-  );
-  inViewVideos.forEach((video) => observer.observe(video));
+// Load video behavior only on pages that contain an opted-in video.
+if (document.querySelector("[data-autoplay-in-view]")) {
+  void import("./video-playback").then(({ initVideoPlayback }) => {
+    const destroy = initVideoPlayback();
+    window.addEventListener("pagehide", (event) => {
+      if (!event.persisted) destroy();
+    });
+  }).catch(() => { /* Native video controls remain available. */ });
 }

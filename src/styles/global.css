@@ -49,6 +49,8 @@
 
   --scene-tone: 0;
 
+  --motion-control: 0.2s;
+  --motion-reveal: 0.7s;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --nav-height: 4.25rem;
 
@@ -687,8 +689,8 @@ section {
   opacity: 0;
   transform: translate3d(0, 1.1rem, 0);
   transition:
-    opacity 0.7s var(--ease-out-expo),
-    transform 0.7s var(--ease-out-expo);
+    opacity var(--motion-reveal) var(--ease-out-expo),
+    transform var(--motion-reveal) var(--ease-out-expo);
 }
 
 .js-reveal.is-visible {
