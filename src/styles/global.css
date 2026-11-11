@@ -641,8 +641,32 @@ a {
 .site-footer {
   position: relative;
   z-index: 1;
+  isolation: isolate;
+  overflow: hidden;
   border-top: 1px solid var(--border);
   padding: clamp(2rem, 5vw, 3rem) 0 clamp(1.5rem, 4vw, 2rem);
+  background: linear-gradient(180deg, rgba(16, 25, 52, 0.34), rgba(7, 8, 11, 0) 100%);
+}
+
+.site-footer::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(
+    circle at center,
+    rgba(105, 220, 230, 0.2) 1px,
+    transparent 1.5px
+  );
+  background-size: 36px 36px;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 28%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 28%, transparent 100%);
+}
+
+.site-footer > .container {
+  position: relative;
+  z-index: 1;
 }
 
 .site-footer__row {

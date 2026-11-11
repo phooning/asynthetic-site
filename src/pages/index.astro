@@ -2,6 +2,8 @@
 import ProjectPanel from "../components/project/ProjectPanel.astro";
 import ArrowDown from "../components/ui/ArrowDown.astro";
 import SectionHeading from "../components/ui/SectionHeading.astro";
+import ContactSignal from "../components/ui/ContactSignal.astro";
+import WorkSignal from "../components/ui/WorkSignal.astro";
 import { projects } from "../data/projects";
 import { site } from "../data/site";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -77,50 +79,61 @@ const principles = [
 
     <section id="work" class="section">
       <div class="container container--wide">
-        <SectionHeading
-          title="Spatial infrastructure for human expression."
-          description="Sigma Canvas is a high-performance, local-first workspace for creative media. Organize, visualize, and refine high-resolution assets from 4K video to RAW photography, through intuitive manipulation on a spatial canvas."
-        />
+        <div class="work-heading" data-work-heading>
+          <WorkSignal />
+          <SectionHeading
+            title="Spatial infrastructure for human expression."
+            description="Sigma Canvas is a high-performance, local-first workspace for creative media. Organize, visualize, and refine high-resolution assets from 4K video to RAW photography, through intuitive manipulation on a spatial canvas."
+          />
+        </div>
         <ProjectPanel project={projects.sigma} highlights={sigmaHighlights} />
       </div>
     </section>
 
-    <section id="about" class="section">
+    <section id="about" class="section section--about">
       <div class="container container--wide">
-        <SectionHeading
-          eyebrow="About"
-          title="A forward facing engineering lab"
-          description="Asynthetic invents interfaces and infrastructure for the boundary between people and increasingly autonomous machines. As software becomes easier for machines to produce, the harder problem becomes keeping the resulting systems coherent, inspectable, and under human control. Four principles guide how we invent."
-        />
-
-        <div class="pillar-grid" data-reveal>
-          {
-            principles.map((principle, index) => (
-              <article class="pillar">
-                <span class="pillar__index">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <h3>{principle.title}</h3>
-                <p>{principle.description}</p>
-              </article>
-            ))
-          }
+        <div class="about">
+          <div class="about__intro" data-reveal>
+            <SectionHeading
+              eyebrow="About"
+              title="A forward facing engineering lab"
+              description="Asynthetic invents interfaces and infrastructure for the boundary between people and increasingly autonomous machines. As software becomes easier for machines to produce, the harder problem becomes keeping the resulting systems coherent, inspectable, and under human control. Four principles guide how we invent."
+            />
+          </div>
+          <div class="pillar-grid">
+            {
+              principles.map((principle, index) => (
+                <article class="pillar" data-reveal>
+                  <span class="pillar__index">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <h3>{principle.title}</h3>
+                  <p>{principle.description}</p>
+                </article>
+              ))
+            }
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="contact" class="section">
+    <section id="contact" class="section section--contact">
       <div class="container container--wide">
-        <SectionHeading
-          eyebrow="Contact"
-          title="Collaborate with us"
-          description="We're open to collaborating with researchers, engineers, and teams working on human control of autonomous systems. Tell us what you're building. Especially if you're a user with lots of media, perhaps a pro studio, or creative, your opinion matters in shaping how we grow."
-        />
-        <p class="contact__action">
-          <a class="btn btn--primary" href={`mailto:${site.contactEmail}`}>
-            {site.contactEmail}
-          </a>
-        </p>
+        <div class="contact-layout">
+          <div class="contact-copy">
+            <SectionHeading
+              eyebrow="Contact"
+              title="Collaborate with us"
+              description="We're open to collaborating with researchers, engineers, and teams working on human control of autonomous systems. Tell us what you're building. Especially if you're a user with lots of media, perhaps a pro studio, or creative, your opinion matters in shaping how we grow."
+            />
+            <p class="contact__action" data-reveal>
+              <a class="btn btn--primary" href={`mailto:${site.contactEmail}`}>
+                {site.contactEmail}
+              </a>
+            </p>
+          </div>
+          <ContactSignal />
+        </div>
       </div>
     </section>
   </main>

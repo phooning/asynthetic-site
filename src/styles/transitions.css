@@ -55,16 +55,6 @@ html[data-intro="on"] .intro {
   animation: intro-fade-in 0.5s ease 0.1s forwards;
 }
 
-.intro__label {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--white);
-  opacity: 0;
-  letter-spacing: 0.9em;
-  text-indent: 0.9em;
-  animation: intro-label 1s var(--ease-out-expo) 0.15s forwards;
-}
-
 /* Progress rule that draws across, then the curtain splits along it. */
 .intro__line {
   display: block;
@@ -78,11 +68,6 @@ html[data-intro="on"] .intro {
 
 @keyframes intro-fade-in {
   to { opacity: 1; }
-}
-
-@keyframes intro-label {
-  from { opacity: 0; letter-spacing: 0.9em; text-indent: 0.9em; }
-  to { opacity: 1; letter-spacing: 0.28em; text-indent: 0.28em; }
 }
 
 @keyframes intro-line {
