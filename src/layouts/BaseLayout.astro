@@ -88,7 +88,10 @@ const structuredData = {
     </script>
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
-  <body data-product={bodyProduct}>
+  <body
+    data-product={bodyProduct}
+    data-home={Astro.url.pathname === "/" ? "" : undefined}
+  >
     <a class="skip-link" href="#main">Skip to content</a>
     <PageIntro />
     <SceneBackground />
