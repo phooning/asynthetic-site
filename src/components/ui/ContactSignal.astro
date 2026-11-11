@@ -1,0 +1,122 @@
+<div class="contact-signal" data-contact-signal aria-hidden="true">
+  <svg
+    class="contact-signal__art"
+    viewBox="0 0 480 340"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <defs>
+      <pattern
+        id="contact-signal-grid"
+        width="24"
+        height="24"
+        patternUnits="userSpaceOnUse"
+      >
+        <path
+          d="M24 0H0V24"
+          stroke="#25254B"
+          stroke-opacity=".1"
+          stroke-width=".7"
+        />
+      </pattern>
+      <linearGradient id="contact-signal-line" x1="48" y1="170" x2="420" y2="236">
+        <stop stop-color="#6867E8" />
+        <stop offset="1" stop-color="#4B9FAF" />
+      </linearGradient>
+      <radialGradient id="contact-signal-glow">
+        <stop stop-color="#6867E8" stop-opacity=".22" />
+        <stop offset="1" stop-color="#6867E8" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+
+    <rect width="480" height="340" fill="url(#contact-signal-grid)" />
+    <circle cx="248" cy="130" r="78" fill="url(#contact-signal-glow)" />
+
+    <path class="contact-signal__route contact-signal__route--input" d="M48 172H204C224 172 225 130 248 130H342" pathLength="1" />
+    <path class="contact-signal__route contact-signal__route--middle" d="M248 130C280 130 278 172 310 172H420" pathLength="1" />
+    <path class="contact-signal__route contact-signal__route--lower" d="M248 130C280 130 278 236 310 236H375" pathLength="1" />
+
+    <circle class="contact-signal__node contact-signal__node--source" cx="48" cy="172" r="3" />
+    <circle class="contact-signal__ring" cx="248" cy="130" r="27" />
+    <circle class="contact-signal__hub" cx="248" cy="130" r="4" />
+    <circle class="contact-signal__node contact-signal__node--upper" cx="342" cy="130" r="3" />
+    <circle class="contact-signal__node contact-signal__node--middle" cx="420" cy="172" r="3" />
+    <circle class="contact-signal__node contact-signal__node--lower" cx="375" cy="236" r="3" />
+  </svg>
+</div>
+
+<style>
+  .contact-signal {
+    width: 100%;
+    max-width: 29rem;
+    justify-self: end;
+  }
+
+  .contact-signal__art {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .contact-signal__route {
+    stroke: url(#contact-signal-line);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+  }
+
+  .contact-signal__ring {
+    stroke: #6867e8;
+    stroke-opacity: 0.48;
+    stroke-width: 1;
+  }
+
+  .contact-signal__hub {
+    fill: #6867e8;
+    stroke: #fff;
+    stroke-width: 2;
+  }
+
+  .contact-signal__node {
+    fill: #4b9faf;
+    stroke: #fff;
+    stroke-width: 2;
+  }
+
+  .contact-signal.is-scroll-driven .contact-signal__route--input {
+    stroke-dashoffset: calc(1 - var(--signal-input, 0));
+  }
+
+  .contact-signal.is-scroll-driven .contact-signal__route--middle {
+    stroke-dashoffset: calc(1 - var(--signal-middle, 0));
+  }
+
+  .contact-signal.is-scroll-driven .contact-signal__route--lower {
+    stroke-dashoffset: calc(1 - var(--signal-lower, 0));
+  }
+
+  .contact-signal.is-scroll-driven .contact-signal__ring {
+    opacity: var(--signal-hub, 0);
+  }
+
+  .contact-signal.is-scroll-driven .contact-signal__hub {
+    opacity: var(--signal-hub, 0);
+  }
+
+  .contact-signal.is-scroll-driven .contact-signal__node--source {
+    opacity: var(--signal-input, 0);
+  }
+
+  .contact-signal.is-scroll-driven .contact-signal__node--upper {
+    opacity: var(--signal-upper, 0);
+  }
+
+  .contact-signal.is-scroll-driven .contact-signal__node--middle {
+    opacity: var(--signal-middle, 0);
+  }
+
+  .contact-signal.is-scroll-driven .contact-signal__node--lower {
+    opacity: var(--signal-lower, 0);
+  }
+</style>

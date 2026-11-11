@@ -172,7 +172,10 @@
   box-shadow:
     0 28px 80px rgba(22, 30, 45, 0.18),
     0 0 90px rgba(104, 103, 232, 0.06);
-  transition: box-shadow 0.55s ease;
+  transition:
+    opacity var(--motion-reveal) var(--ease-out-expo),
+    transform 0.32s var(--ease-out-expo),
+    box-shadow 0.55s ease;
 }
 
 .project-panel.is-scene-active {
@@ -274,43 +277,39 @@
   }
 }
 
-/* About pillars */
+/* About: a clear introduction followed by four concise principles. */
+
+.about {
+  display: block;
+}
+
+.about__intro {
+  max-width: 48rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.about__intro .section-head {
+  margin: 0;
+}
 
 .pillar-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  overflow: hidden;
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
 }
 
 .pillar {
+  --pillar-reveal-delay: 0ms;
   position: relative;
-  background: var(--background-panel);
-  padding: clamp(1.5rem, 2.5vw, 2rem);
-  transition: background 0.3s ease;
-}
-
-/* Scan line draws across the top edge on hover. */
-.pillar::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 1px;
-  background: linear-gradient(90deg, var(--cyan), transparent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.5s var(--ease-out-expo);
-}
-
-.pillar:hover {
-  background: color-mix(in srgb, var(--background-panel), var(--cyan) 3%);
-}
-
-.pillar:hover::before {
-  transform: scaleX(1);
+  min-width: 0;
+  padding: clamp(1.25rem, 2vw, 1.75rem);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: rgba(8, 12, 30, 0.52);
+  transition:
+    opacity var(--motion-reveal) var(--ease-out-expo) var(--pillar-reveal-delay),
+    transform 0.32s var(--ease-out-expo),
+    box-shadow 0.32s ease;
 }
 
 .pillar__index {
@@ -318,15 +317,8 @@
   margin-bottom: 1.5rem;
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: var(--muted);
-  transition:
-    color 0.25s ease,
-    letter-spacing 0.4s var(--ease-out-expo);
-}
-
-.pillar:hover .pillar__index {
   color: var(--cyan);
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
 }
 
 .pillar h3 {
@@ -344,10 +336,40 @@
   color: var(--silver);
 }
 
-@media (max-width: 60rem) {
+/* Keep the entrance stagger on opacity so it doesn't delay the hover response. */
+.pillar-grid > .pillar:nth-child(2) { --pillar-reveal-delay: 80ms; }
+.pillar-grid > .pillar:nth-child(3) { --pillar-reveal-delay: 160ms; }
+.pillar-grid > .pillar:nth-child(4) { --pillar-reveal-delay: 240ms; }
+
+.project-panel.is-tilting,
+.pillar.is-tilting {
+  transform-style: preserve-3d;
+  transform:
+    perspective(1200px)
+    rotateX(var(--card-tilt-x, 0deg))
+    rotateY(var(--card-tilt-y, 0deg))
+    translate3d(0, var(--card-lift, -1px), 0);
+  transition: box-shadow 0.45s ease;
+  will-change: transform;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-panel:not(.is-tilting):hover,
+  .pillar:not(.is-tilting):hover {
+    transform: perspective(1200px) rotateX(0.45deg) rotateY(-0.45deg) translateY(-2px);
+  }
+}
+
+@media (max-width: 75rem) {
   .pillar-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+@media (max-width: 60rem) {
+  .pillar-grid > .pillar:nth-child(2),
+  .pillar-grid > .pillar:nth-child(3),
+  .pillar-grid > .pillar:nth-child(4) { --pillar-reveal-delay: 0ms; }
 }
 
 @media (max-width: 32rem) {
@@ -357,13 +379,22 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .btn::after,
-  .pillar::before {
+  .btn::after {
     display: none;
   }
 
-  .pillar,
-  .pillar__index,
+  .project-panel,
+  .pillar {
+    transition: none;
+  }
+
+  .project-panel:not(.is-tilting):hover,
+  .pillar:not(.is-tilting):hover,
+  .project-panel.is-tilting,
+  .pillar.is-tilting {
+    transform: none;
+  }
+
   .site-nav__links a::before,
   .site-nav__links a::after {
     transition: none;

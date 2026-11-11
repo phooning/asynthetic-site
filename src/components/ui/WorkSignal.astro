@@ -1,0 +1,90 @@
+<div class="work-signal" data-work-signal aria-hidden="true">
+  <svg
+    class="work-signal__art"
+    viewBox="0 0 480 220"
+    preserveAspectRatio="xMidYMid meet"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <defs>
+      <linearGradient id="work-signal-line" x1="48" y1="80" x2="432" y2="158">
+        <stop stop-color="#6867E8" />
+        <stop offset="1" stop-color="#4B9FAF" />
+      </linearGradient>
+    </defs>
+
+    <path
+      class="work-signal__route"
+      data-route="a"
+      d="M42 114H132C170 114 178 58 222 58H333C370 58 372 108 438 108"
+      pathLength="1"
+    />
+    <path
+      class="work-signal__route"
+      data-route="b"
+      d="M84 164H178C218 164 220 128 258 128H348C382 128 382 164 414 164"
+      pathLength="1"
+    />
+
+    <circle class="work-signal__tracer" data-tracer="a1" cx="42" cy="114" r="3.2" />
+    <circle class="work-signal__tracer" data-tracer="a2" cx="132" cy="114" r="2.5" />
+    <circle class="work-signal__tracer" data-tracer="b1" cx="84" cy="164" r="2.8" />
+  </svg>
+</div>
+
+<style>
+  .work-signal {
+    position: absolute;
+    z-index: 0;
+    inset: -1.25rem -1.5rem;
+    overflow: hidden;
+    background-image: radial-gradient(
+      circle,
+      var(--work-grid-ink, rgba(20, 25, 34, 0.2)) 1px,
+      transparent 1.45px
+    );
+    background-size: 24px 24px;
+    background-position: center;
+    opacity: var(--work-signal-strength, 0.28);
+    -webkit-mask-image: radial-gradient(ellipse 84% 112% at 30% 50%, #000 22%, transparent 100%);
+    mask-image: radial-gradient(ellipse 84% 112% at 30% 50%, #000 22%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .work-signal__art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .work-signal__route {
+    stroke: url(#work-signal-line);
+    stroke-width: 1.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    opacity: 0.3;
+  }
+
+  .work-signal__tracer {
+    fill: #6867e8;
+    stroke: #fff;
+    stroke-width: 1.5;
+    filter: drop-shadow(0 0 4px rgba(104, 103, 232, 0.45));
+  }
+
+  .work-signal.is-scroll-driven .work-signal__route[data-route="a"] {
+    stroke-dashoffset: calc(1 - var(--work-trace-a, 0));
+    opacity: var(--work-trace-a, 0);
+  }
+
+  .work-signal.is-scroll-driven .work-signal__route[data-route="b"] {
+    stroke-dashoffset: calc(1 - var(--work-trace-b, 0));
+    opacity: var(--work-trace-b, 0);
+  }
+
+  .work-signal.is-scroll-driven .work-signal__tracer {
+    opacity: var(--work-tracer-opacity, 0);
+  }
+</style>
