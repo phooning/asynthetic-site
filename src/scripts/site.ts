@@ -20,6 +20,73 @@ if (navToggle && navLinks) {
   });
 }
 
+// Brief glow on the background grid lines once the scroll-to-top lands.
+const sceneGrid = scene?.querySelector<HTMLElement>(".scene__grid") ?? null;
+
+function glowGrid(restart: boolean) {
+  const grid = sceneGrid;
+  if (!grid || reducedMotion.matches) return;
+  if (grid.classList.contains("is-glowing")) {
+    if (!restart) return;
+    grid.classList.remove("is-glowing");
+    void grid.offsetWidth; // restart the animation
+  }
+  grid.classList.add("is-glowing");
+  grid.addEventListener("animationend", () => grid.classList.remove("is-glowing"), { once: true });
+}
+
+function pulseGridWhenAtTop() {
+  if (!sceneGrid || reducedMotion.matches) return;
+  const deadline = performance.now() + 2500;
+  // Ignite while the eased scroll is still settling, so the glow peaks on arrival.
+  const igniteWithin = Math.min(180, window.scrollY * 0.2);
+  const check = () => {
+    if (window.scrollY <= igniteWithin) {
+      glowGrid(true);
+    } else if (performance.now() < deadline) {
+      requestAnimationFrame(check);
+    }
+  };
+  requestAnimationFrame(check);
+}
+
+// Tugging past the top (elastic overscroll, or wheel/touch pull where the
+// browser has none) fires the same activation glow.
+let wheelPull = 0;
+window.addEventListener("scroll", () => {
+  if (window.scrollY < -8) glowGrid(false);
+}, { passive: true });
+window.addEventListener("wheel", (event) => {
+  if (window.scrollY > 0 || event.deltaY >= 0) {
+    wheelPull = 0;
+    return;
+  }
+  wheelPull += -event.deltaY;
+  if (wheelPull > 60) {
+    wheelPull = 0;
+    glowGrid(false);
+  }
+}, { passive: true });
+let touchStartY = 0;
+window.addEventListener("touchstart", (event) => {
+  touchStartY = event.touches[0]?.clientY ?? 0;
+}, { passive: true });
+window.addEventListener("touchmove", (event) => {
+  const y = event.touches[0]?.clientY ?? 0;
+  if (window.scrollY <= 0 && y - touchStartY > 40) glowGrid(false);
+}, { passive: true });
+
+// On the home page, the brand link scrolls back to the top instead of reloading.
+document.querySelector<HTMLAnchorElement>(".site-nav__brand")?.addEventListener("click", (event) => {
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+  const target = new URL(event.currentTarget instanceof HTMLAnchorElement ? event.currentTarget.href : "/", location.href);
+  if (target.pathname !== location.pathname) return;
+  event.preventDefault();
+  window.scrollTo({ top: 0, behavior: reducedMotion.matches ? "auto" : "smooth" });
+  pulseGridWhenAtTop();
+  if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+});
+
 const nav = document.querySelector<HTMLElement>("[data-site-nav]");
 if (nav) {
   let frame = 0;

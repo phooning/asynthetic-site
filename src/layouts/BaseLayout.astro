@@ -1,4 +1,5 @@
 ---
+import PageIntro from "../components/layout/PageIntro.astro";
 import SceneBackground from "../components/layout/SceneBackground.astro";
 import SiteFooter from "../components/layout/SiteFooter.astro";
 import SiteHeader from "../components/layout/SiteHeader.astro";
@@ -6,6 +7,7 @@ import { site } from "../data/site";
 import "../styles/global.css";
 import "../styles/components.css";
 import "../styles/pages.css";
+import "../styles/transitions.css";
 
 interface Props {
   title?: string;
@@ -66,10 +68,29 @@ const structuredData = {
 
     <link rel="icon" type="image/png" href={site.logo} />
     <link rel="apple-touch-icon" href={site.logoLarge} />
+    <script is:inline>
+      // Play the intro curtain once per session, never with reduced motion.
+      (function () {
+        var root = document.documentElement;
+        var play = false;
+        try {
+          play =
+            !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+            !sessionStorage.getItem("asynthetic:intro");
+          if (play) sessionStorage.setItem("asynthetic:intro", "1");
+        } catch (e) {}
+        root.dataset.intro = play ? "on" : "off";
+        if (play) {
+          // Safety: remove the curtain even if animations never finish.
+          setTimeout(function () { root.dataset.intro = "off"; }, 3200);
+        }
+      })();
+    </script>
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
   <body data-product={bodyProduct}>
     <a class="skip-link" href="#main">Skip to content</a>
+    <PageIntro />
     <SceneBackground />
     <SiteHeader />
     <slot />

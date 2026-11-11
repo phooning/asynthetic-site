@@ -1,0 +1,174 @@
+/* Asynthetic — page intro curtain and cross-document page transitions.
+   Pure CSS on native browser APIs; browsers without View Transitions
+   simply navigate normally. */
+
+/* ---------- Intro curtain (first visit per session) ---------- */
+
+.intro {
+  display: none;
+}
+
+html[data-intro="on"] .intro {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  /* Whole curtain unmounts after the panels have opened. */
+  animation: intro-unmount 0s linear 2.1s forwards;
+}
+
+.intro__panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50.5%;
+  background: var(--background-deep);
+  will-change: transform;
+}
+
+.intro__panel--top {
+  top: 0;
+  animation: intro-open-up 0.95s var(--ease-out-expo) 1.05s forwards;
+}
+
+.intro__panel--bottom {
+  bottom: 0;
+  animation: intro-open-down 0.95s var(--ease-out-expo) 1.05s forwards;
+}
+
+.intro__core {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  animation: intro-core-out 0.35s ease 0.85s forwards;
+}
+
+.intro__core img {
+  width: 2.5rem;
+  height: 2.5rem;
+  opacity: 0;
+  animation: intro-fade-in 0.5s ease 0.1s forwards;
+}
+
+.intro__label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--white);
+  opacity: 0;
+  letter-spacing: 0.9em;
+  text-indent: 0.9em;
+  animation: intro-label 1s var(--ease-out-expo) 0.15s forwards;
+}
+
+/* Progress rule that draws across, then the curtain splits along it. */
+.intro__line {
+  display: block;
+  width: min(14rem, 50vw);
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent-text), var(--cyan));
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: intro-line 0.8s cubic-bezier(0.65, 0, 0.35, 1) 0.2s forwards;
+}
+
+@keyframes intro-fade-in {
+  to { opacity: 1; }
+}
+
+@keyframes intro-label {
+  from { opacity: 0; letter-spacing: 0.9em; text-indent: 0.9em; }
+  to { opacity: 1; letter-spacing: 0.28em; text-indent: 0.28em; }
+}
+
+@keyframes intro-line {
+  to { transform: scaleX(1); }
+}
+
+@keyframes intro-core-out {
+  to { opacity: 0; transform: translateY(-6px); }
+}
+
+@keyframes intro-open-up {
+  to { transform: translateY(-101%); }
+}
+
+@keyframes intro-open-down {
+  to { transform: translateY(101%); }
+}
+
+@keyframes intro-unmount {
+  to { visibility: hidden; }
+}
+
+/* ---------- Page transitions (cross-document) ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  /* Header, scene, and footer persist; only the page body transitions. */
+  main {
+    view-transition-name: page;
+  }
+
+  ::view-transition-group(root) {
+    animation-duration: 0s;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  ::view-transition-group(page) {
+    animation: none;
+  }
+
+  /* Outro: content lifts away, defocuses, and darkens. */
+  ::view-transition-old(page) {
+    animation: page-out 0.45s cubic-bezier(0.65, 0, 0.35, 1) both;
+  }
+
+  /* Intro: new page is unmasked bottom-to-top while settling into place. */
+  ::view-transition-new(page) {
+    animation: page-in 0.9s var(--ease-out-expo) 0.2s both;
+  }
+
+  @keyframes page-out {
+    to {
+      opacity: 0;
+      transform: translateY(-2.5rem) scale(0.985);
+      filter: blur(6px);
+    }
+  }
+
+  @keyframes page-in {
+    from {
+      clip-path: inset(100% 0 0 0);
+      transform: translateY(3rem);
+      filter: blur(4px);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-intro="on"] .intro {
+    display: none;
+  }
+}
+
+html[data-intro="on"] {
+  --intro-delay: 1.15s;
+}
