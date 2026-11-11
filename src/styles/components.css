@@ -3,22 +3,47 @@
 /* Buttons */
 
 .btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.25rem;
   border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   font-size: 0.92rem;
   font-weight: 500;
   text-decoration: none;
-  color: #d8dce5;
+  color: #f1f4fa;
   background: rgba(255, 255, 255, 0.025);
   cursor: pointer;
   transition:
     background var(--motion-control) ease,
     border-color var(--motion-control) ease,
     transform var(--motion-control) var(--ease-out-expo);
+}
+
+/* One-shot scan sweep across the control on hover. */
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgba(105, 220, 230, 0.22) 50%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+
+.btn:hover::after,
+.btn:focus-visible::after {
+  transform: translateX(120%);
+  transition: transform 0.7s var(--ease-out-expo);
 }
 
 .btn svg {
@@ -28,8 +53,8 @@
 
 .btn:hover,
 .btn:focus-visible {
-  border-color: rgba(165, 164, 243, 0.45);
-  background: rgba(104, 103, 232, 0.08);
+  border-color: rgba(105, 220, 230, 0.5);
+  background: rgba(105, 220, 230, 0.05);
   color: var(--white);
 }
 
@@ -262,8 +287,30 @@
 }
 
 .pillar {
+  position: relative;
   background: var(--background-panel);
   padding: clamp(1.5rem, 2.5vw, 2rem);
+  transition: background 0.3s ease;
+}
+
+/* Scan line draws across the top edge on hover. */
+.pillar::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--cyan), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s var(--ease-out-expo);
+}
+
+.pillar:hover {
+  background: color-mix(in srgb, var(--background-panel), var(--cyan) 3%);
+}
+
+.pillar:hover::before {
+  transform: scaleX(1);
 }
 
 .pillar__index {
@@ -272,12 +319,21 @@
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--muted);
+  transition:
+    color 0.25s ease,
+    letter-spacing 0.4s var(--ease-out-expo);
+}
+
+.pillar:hover .pillar__index {
+  color: var(--cyan);
+  letter-spacing: 0.14em;
 }
 
 .pillar h3 {
   margin: 0 0 0.6rem;
   font-size: 1.05rem;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: -0.005em;
   color: var(--white);
 }
 
@@ -297,6 +353,20 @@
 @media (max-width: 32rem) {
   .pillar-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn::after,
+  .pillar::before {
+    display: none;
+  }
+
+  .pillar,
+  .pillar__index,
+  .site-nav__links a::before,
+  .site-nav__links a::after {
+    transition: none;
   }
 }
 
