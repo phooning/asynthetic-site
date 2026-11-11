@@ -627,3 +627,9 @@
     transition: none;
   }
 }
+
+/* ---------- Contact ---------- */
+
+.contact__action {
+  margin: clamp(1.5rem, 3vw, 2rem) 0 0;
+}
