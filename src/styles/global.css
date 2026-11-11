@@ -182,7 +182,6 @@ a {
 .scene__base,
 .scene__daylight,
 .scene__mesh,
-.scene__sweep,
 .scene__grid,
 .scene__noise,
 .scene__vignette,
@@ -291,23 +290,49 @@ a {
   animation: orb-b 11s ease-in-out infinite alternate;
 }
 
-.scene__sweep {
-  inset: -20%;
-  background: linear-gradient(
-    115deg,
-    transparent 42%,
-    rgba(105, 220, 230, 0.1) 47%,
-    rgba(244, 246, 250, 0.16) 50%,
-    rgba(108, 92, 235, 0.12) 53%,
-    transparent 58%
-  );
-  mix-blend-mode: screen;
-  opacity: 0;
-  transform: translate3d(-60%, -8%, 0);
-  animation: scene-sweep 14s ease-in-out 1 both;
+/* Homepage pulse: a ring of light expands from the wordmark and lights the
+   fixed grid lines as it passes. The grid never moves; only the mask grows. */
+@property --pulse-r {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
 }
 
-/* Glow layer: white copy of the grid lines, pulsed by site.ts after scroll-to-top. */
+.scene__grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.11) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.11) 1px, transparent 1px);
+  background-size:
+    288px 288px,
+    288px 288px,
+    72px 72px,
+    72px 72px;
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.35));
+  --pulse-r: 0px;
+  -webkit-mask-image: radial-gradient(
+    circle at 50% 42%,
+    transparent calc(var(--pulse-r) - 160px),
+    #000 var(--pulse-r),
+    transparent calc(var(--pulse-r) + 40px)
+  );
+  mask-image: radial-gradient(
+    circle at 50% 42%,
+    transparent calc(var(--pulse-r) - 160px),
+    #000 var(--pulse-r),
+    transparent calc(var(--pulse-r) + 40px)
+  );
+}
+
+body[data-home] .scene__grid::before {
+  animation: hero-grid-pulse 3.2s cubic-bezier(0.22, 0.7, 0.3, 1) 1.2s 1 both;
+}
+
 .scene__grid::after {
   content: "";
   position: absolute;
@@ -334,6 +359,12 @@ a {
   0% { opacity: 0; }
   25% { opacity: 0.85; }
   100% { opacity: 0; }
+}
+
+@keyframes hero-grid-pulse {
+  0% { --pulse-r: 0px; opacity: 0; }
+  12% { opacity: 1; }
+  100% { --pulse-r: 1500px; opacity: 0; }
 }
 
 .scene__grid {
@@ -406,23 +437,14 @@ a {
   to { transform: translate3d(-7vw, -8vh, 0) scale(1.09); }
 }
 
-@keyframes scene-sweep {
-  0% { transform: translate3d(-60%, -8%, 0); opacity: 0; }
-  10% { opacity: 0.85; }
-  38% { transform: translate3d(60%, 8%, 0); opacity: 0.85; }
-  48% { opacity: 0; }
-  100% { transform: translate3d(60%, 8%, 0); opacity: 0; }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .scene__mesh,
-  .scene__orb,
-  .scene__sweep {
+  .scene__orb {
     animation: none;
   }
 
-  .scene__sweep {
-    display: none;
+  .scene__grid::before {
+    animation: none !important;
   }
 }
 
