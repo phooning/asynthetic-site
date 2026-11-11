@@ -11,5 +11,6 @@ export const site = {
   logo: "/assets/brand/logo-96.png",
   /** 384px mark for the home hero and the touch icon. */
   logoLarge: "/assets/brand/logo-384.png",
+  contactEmail: "asyntheticlabs@gmail.com",
   githubUrl: "https://github.com/phooning",
 } as const;

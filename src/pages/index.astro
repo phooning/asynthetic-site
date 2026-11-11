@@ -84,12 +84,12 @@ const principles = [
       </div>
     </section>
 
-    <section id="approach" class="section">
+    <section id="about" class="section">
       <div class="container container--wide">
         <SectionHeading
-          eyebrow="Approach"
-          title="What connects the work"
-          description="Four principles guide how we invent."
+          eyebrow="About"
+          title="A forward facing engineering lab"
+          description="Asynthetic invents interfaces and infrastructure for the boundary between people and increasingly autonomous machines. As software becomes easier for machines to produce, the harder problem becomes keeping the resulting systems coherent, inspectable, and under human control. Four principles guide how we invent."
         />
 
         <div class="pillar-grid" data-reveal>
@@ -108,13 +108,18 @@ const principles = [
       </div>
     </section>
 
-    <section id="about" class="section">
-      <div class="container">
+    <section id="contact" class="section">
+      <div class="container container--wide">
         <SectionHeading
-          eyebrow="About"
-          title="A forward facing engineering lab"
-          description="Asynthetic invents interfaces and infrastructure for the boundary between people and increasingly autonomous machines. As software becomes easier for machines to produce, the harder problem becomes keeping the resulting systems coherent, inspectable, and under human control."
+          eyebrow="Contact"
+          title="Collaborate with Asynthetic"
+          description="We're open to collaborating with researchers, engineers, and teams working on human control of autonomous systems. Tell us what you're building. Especially if you're a user with lots of media, perhaps a pro studio, or creative, your opinion matters in shaping how we grow."
         />
+        <p class="contact__action">
+          <a class="btn btn--primary" href={`mailto:${site.contactEmail}`}>
+            {site.contactEmail}
+          </a>
+        </p>
       </div>
     </section>
   </main>
