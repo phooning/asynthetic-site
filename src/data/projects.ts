@@ -56,7 +56,7 @@ export const projects = {
       { label: "Product page", href: "/products/sigma/" },
       {
         label: "GitHub",
-        href: "https://github.com/phooning/sigma",
+        href: "https://github.com/Asynthetic/sigma",
         external: true
       }
     ],
@@ -69,7 +69,7 @@ export const projects = {
       version: "0.1.0",
       channel: "Experimental preview",
       date: "2026-05-13",
-      url: "https://github.com/phooning/sigma/releases",
+      url: "https://github.com/Asynthetic/sigma/releases",
       platforms: [
         { os: "macOS", arch: "Apple Silicon", formats: [".dmg", ".app.tar.gz"] },
         { os: "Windows", arch: "x64", formats: [".exe", ".msi"] },

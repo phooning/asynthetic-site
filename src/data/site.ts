@@ -12,5 +12,6 @@ export const site = {
   /** 384px mark for the home hero and the touch icon. */
   logoLarge: "/assets/brand/logo-384.png",
   contactEmail: "asyntheticlabs@gmail.com",
-  githubUrl: "https://github.com/phooning",
+  githubUrl: "https://github.com/Asynthetic",
+  supportUrl: "https://ko-fi.com/asynthetic",
 } as const;
