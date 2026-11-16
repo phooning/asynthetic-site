@@ -686,6 +686,36 @@ body[data-home] .scene__grid::before {
   mask-image: linear-gradient(180deg, #000 0%, #000 28%, transparent 100%);
 }
 
+.site-footer::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    110deg,
+    transparent 18%,
+    color-mix(in srgb, var(--accent) 12%, transparent) 43%,
+    color-mix(in srgb, var(--cyan) 7%, transparent) 57%,
+    transparent 82%
+  );
+  transform: translateX(-110%);
+  animation: footer-gradient-wipe 26s ease-in-out infinite alternate;
+}
+
+@keyframes footer-gradient-wipe {
+  to {
+    transform: translateX(110%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-footer::after {
+    animation: none;
+    transform: none;
+  }
+}
+
 .site-footer > .container {
   position: relative;
   z-index: 1;

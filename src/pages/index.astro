@@ -9,130 +9,161 @@ import { site } from "../data/site";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const sigmaHighlights = [
-  "Infinite spatial canvas",
-  "Media as first-class spatial objects",
-  "Frame-accurate video interaction",
-  "Crop, resize, A/B loops",
-  "Saved spatial workflows",
-  "Local-first Rust media pipeline",
-  "Lightweight Tauri desktop shell",
-  "ComfyUI integration (in progress)"
+    "Infinite spatial canvas",
+    "Media as first-class spatial objects",
+    "Frame-accurate video interaction",
+    "Crop, resize, A/B loops",
+    "Saved spatial workflows",
+    "Local-first Rust media pipeline",
+    "Lightweight Tauri desktop shell",
+    "ComfyUI integration (in progress)",
 ] as const;
 
 const principles = [
-  {
-    title: "Human-over-the-loop",
-    description:
-      "Interfaces must make human control clear as systems become more autonomous."
-  },
-  {
-    title: "Spatial systems",
-    description:
-      "Information and machine state are effective spatially than through traditional linear interfaces."
-  },
-  {
-    title: "Local capability",
-    description:
-      "Designed to preserve human intent while connecting your work with other professional tools, external AI systems, and automated processing pipelines."
-  },
-  {
-    title: "Verification",
-    description:
-      "Autonomy should be paired with deterministic interfaces, observability, testing, and human review."
-  }
+    {
+        title: "Human-over-the-loop",
+        description:
+            "Interfaces must make human control clear as systems become more autonomous.",
+    },
+    {
+        title: "Spatial systems",
+        description:
+            "Information and machine state are effective spatially than through traditional linear interfaces.",
+    },
+    {
+        title: "Local capability",
+        description:
+            "Designed to preserve human intent while connecting your work with other professional tools, external AI systems, and automated processing pipelines.",
+    },
+    {
+        title: "Verification",
+        description:
+            "Autonomy should be paired with deterministic interfaces, observability, testing, and human review.",
+    },
 ] as const;
 ---
 
 <BaseLayout
-  title={site.title}
-  description={site.description}
-  socialDescription={site.socialDescription}
-  canonicalPath="/"
+    title={site.title}
+    description={site.description}
+    socialDescription={site.socialDescription}
+    canonicalPath="/"
 >
-  <main id="main">
-    <section class="hero">
-      <div class="hero__content">
-        <div class="brand-mark">
-          <img
-            class="brand-mark__image"
-            src={site.logoLarge}
-            width="384"
-            height="384"
-            alt=""
-            decoding="async"
-            fetchpriority="high"
-          />
-        </div>
-        <h1 class="wordmark">ASYNTHETIC</h1>
-        <p class="hero__tagline">
-          Engineering the human layer of intelligent systems. Connecting human
-          intent with powerful software, creative tools, and autonomous
-          workflows.
-        </p>
+    <main id="main">
+        <section class="hero">
+            <div class="hero__content">
+                <div class="brand-mark">
+                    <img
+                        class="brand-mark__image"
+                        src={site.logoLarge}
+                        width="384"
+                        height="384"
+                        alt=""
+                        decoding="async"
+                        fetchpriority="high"
+                    />
+                </div>
+                <h1 class="wordmark">ASYNTHETIC</h1>
+                <p class="hero__tagline">
+                    Engineering the human layer of intelligent systems.
+                    Connecting human intent with powerful software, creative
+                    tools, and autonomous workflows.
+                </p>
 
-        <a class="hero__scroll-cue" href="#work">
-          Current work
-          <ArrowDown />
-        </a>
-      </div>
-    </section>
+                <a class="hero__scroll-cue" href="#work">
+                    Current work
+                    <ArrowDown />
+                </a>
+            </div>
+        </section>
 
-    <section id="work" class="section">
-      <div class="container container--wide">
-        <div class="work-heading" data-work-heading>
-          <WorkSignal />
-          <SectionHeading
-            title="Spatial infrastructure for human expression."
-            description="Sigma Canvas is a high-performance, local-first workspace for creative media. Organize, visualize, and refine high-resolution assets from 4K video to RAW photography, through intuitive manipulation on a spatial canvas."
-          />
-        </div>
-        <ProjectPanel project={projects.sigma} highlights={sigmaHighlights} />
-      </div>
-    </section>
+        <section id="work" class="section">
+            <div class="container container--wide">
+                <div class="work-heading" data-work-heading>
+                    <WorkSignal />
+                    <SectionHeading
+                        title="Spatial infrastructure for human expression."
+                        description="Sigma Canvas is a high-performance, local-first workspace for creative media. Organize, visualize, and refine high-resolution assets from 4K video to RAW photography, through intuitive manipulation on a spatial canvas."
+                    />
+                </div>
+                <ProjectPanel
+                    project={projects.sigma}
+                    highlights={sigmaHighlights}
+                />
+            </div>
+        </section>
 
-    <section id="about" class="section section--about">
-      <div class="container container--wide">
-        <div class="about">
-          <div class="about__intro" data-reveal>
-            <SectionHeading
-              title="A forward facing engineering lab"
-              description="Asynthetic invents interfaces and infrastructure for the boundary between people and increasingly autonomous machines. As software becomes easier for machines to produce, the harder problem becomes keeping the resulting systems coherent, inspectable, and under human control. Four principles guide how we invent."
-            />
-          </div>
-          <div class="pillar-grid">
-            {
-              principles.map((principle, index) => (
-                <article class="pillar" data-reveal>
-                  <span class="pillar__index">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <h3>{principle.title}</h3>
-                  <p>{principle.description}</p>
-                </article>
-              ))
-            }
-          </div>
-        </div>
-      </div>
-    </section>
+        <section id="about" class="section section--about">
+            <div class="container container--wide">
+                <div class="about">
+                    <div class="about__intro" data-reveal>
+                        <SectionHeading
+                            title="A forward facing engineering lab"
+                            description="Asynthetic invents interfaces and infrastructure for the boundary between people and increasingly autonomous machines. As software becomes easier for machines to produce, the harder problem becomes keeping the resulting systems coherent, inspectable, and under human control. Four principles guide how we invent."
+                        />
+                    </div>
+                    <div class="pillar-grid">
+                        {principles.map((principle, index) => (
+                            <article class="pillar" data-reveal>
+                                <span class="pillar__index">
+                                    {String(index + 1).padStart(2, "0")}
+                                </span>
+                                <h3>{principle.title}</h3>
+                                <p>{principle.description}</p>
+                            </article>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <section id="contact" class="section section--contact">
-      <div class="container container--wide">
-        <div class="contact-layout">
-          <div class="contact-copy">
-            <SectionHeading
-              title="Collaborate with us"
-              description="We're open to collaborating with researchers, engineers, and teams working on human control of autonomous systems. Tell us what you're building. Especially if you're a user with lots of media, perhaps a pro studio, or creative, your opinion matters in shaping how we grow."
-            />
-            <p class="contact__action" data-reveal>
-              <a class="btn btn--primary" href={`mailto:${site.contactEmail}`}>
-                {site.contactEmail}
-              </a>
-            </p>
-          </div>
-          <ContactSignal />
-        </div>
-      </div>
-    </section>
-  </main>
+        <section id="contact" class="section section--contact">
+            <div class="container container--wide">
+                <div class="contact-layout">
+                    <div class="contact-copy">
+                        <SectionHeading
+                            title="Collaborate with us"
+                            description="We're open to collaborating with researchers, engineers, and teams working on human control of autonomous systems. Tell us what you're building. Especially if you're a user with lots of media, perhaps a pro studio, or creative, your opinion matters in shaping how we grow."
+                        />
+                        <p class="contact__action" data-reveal>
+                            <a
+                                class="btn btn--primary"
+                                href={`mailto:${site.contactEmail}`}
+                            >
+                                {site.contactEmail}
+                            </a>
+                        </p>
+                    </div>
+                    <ContactSignal />
+                </div>
+            </div>
+        </section>
+
+        <section id="support" class="section section--support">
+            <div class="container container--wide">
+                <div class="support-layout">
+                    <SectionHeading
+                        title="Join the fund"
+                        description="We are completely self-funded out of passion in developing tools for creative workflows, human-centered computing, and applied AI."
+                    />
+                    <div class="support-action" data-reveal>
+                        <a
+                            class="btn btn--primary"
+                            href={site.supportUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Support on Ko-fi (opens in a new tab)"
+                        >
+                            Support us on Ko-fi{" "}
+                            <span aria-hidden="true">↗</span>
+                        </a>
+                        <p>
+                            Help sustain our experimentation, research, and OSS
+                            development. Buy us a beer!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 </BaseLayout>

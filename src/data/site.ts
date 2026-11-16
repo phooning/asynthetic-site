@@ -13,4 +13,5 @@ export const site = {
   logoLarge: "/assets/brand/logo-384.png",
   contactEmail: "asyntheticlabs@gmail.com",
   githubUrl: "https://github.com/phooning",
+  supportUrl: "https://ko-fi.com/asynthetic",
 } as const;
